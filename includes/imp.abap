@@ -18,3 +18,20 @@ CLASS lcl_element_remover IMPLEMENTATION.
         p_exclude       = lt_tab.
   ENDMETHOD.                    "hide_onli
 ENDCLASS.                    "lcl_element_remover IMPLEMENTATION
+
+*----------------------------------------------------------------------*
+*       CLASS lcl_visibility_dispenser DEFINITION
+*----------------------------------------------------------------------*
+*
+*----------------------------------------------------------------------*
+CLASS lcl_visibility_dispenser IMPLEMENTATION.
+  METHOD: make_blocks_invisible_init.
+    LOOP AT SCREEN.
+      IF screen-group1 = 'ID2'.
+        screen-invisible = '1'.
+        screen-input = '0'.
+        MODIFY SCREEN.
+      ENDIF.
+    ENDLOOP.
+  ENDMETHOD.                    "make_blocks_invisible_init
+ENDCLASS.                    "lcl_visibility_dispenser IMPLEMENTATION
