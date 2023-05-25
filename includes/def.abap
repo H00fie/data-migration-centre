@@ -21,3 +21,13 @@ CLASS lcl_visibility_dispenser DEFINITION.
   PUBLIC SECTION.
     METHODS: make_blocks_invisible_init.
 ENDCLASS.                    "lcl_visibility_dispenser DEFINITION
+
+*----------------------------------------------------------------------*
+*       CLASS lcl_action_handler DEFINITION
+*----------------------------------------------------------------------*
+*
+*----------------------------------------------------------------------*
+CLASS lcl_action_handler DEFINITION.
+  PUBLIC SECTION.
+    METHODS: decide_action.
+ENDCLASS.                    "lcl_action_handler DEFINITION

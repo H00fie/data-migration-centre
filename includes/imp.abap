@@ -35,3 +35,17 @@ CLASS lcl_visibility_dispenser IMPLEMENTATION.
     ENDLOOP.
   ENDMETHOD.                    "make_blocks_invisible_init
 ENDCLASS.                    "lcl_visibility_dispenser IMPLEMENTATION
+
+*----------------------------------------------------------------------*
+*       CLASS lcl_action_handler IMPLEMENTATION
+*----------------------------------------------------------------------*
+*
+*----------------------------------------------------------------------*
+CLASS lcl_action_handler IMPLEMENTATION.
+  METHOD decide_action.
+    CASE sy-ucomm.
+      WHEN 'FC1'.
+*Hide the welcoming message and display the window with the option to choose the type of the file containing the legacy data.
+    ENDCASE.
+  ENDMETHOD.                    "decide_action
+ENDCLASS.                    "lcl_action_handler IMPLEMENTATION
