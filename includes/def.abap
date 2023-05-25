@@ -31,3 +31,16 @@ CLASS lcl_action_handler DEFINITION.
   PUBLIC SECTION.
     METHODS: decide_action.
 ENDCLASS.                    "lcl_action_handler DEFINITION
+
+*----------------------------------------------------------------------*
+*       CLASS lcl_screen_adjuster DEFINITION
+*----------------------------------------------------------------------*
+*
+*----------------------------------------------------------------------*
+CLASS lcl_screen_adjuster DEFINITION.
+  PUBLIC SECTION.
+    METHODS: constructor IMPORTING io_element_remover TYPE REF TO lcl_element_remover,
+             adjust_screen.
+  PRIVATE SECTION.
+    DATA: lo_element_remover TYPE REF TO lcl_element_remover.
+ENDCLASS.                    "lcl_screen_adjuster DEFINITION

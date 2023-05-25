@@ -49,3 +49,17 @@ CLASS lcl_action_handler IMPLEMENTATION.
     ENDCASE.
   ENDMETHOD.                    "decide_action
 ENDCLASS.                    "lcl_action_handler IMPLEMENTATION
+
+*----------------------------------------------------------------------*
+*       CLASS lcl_screen_adjuster IMPLEMENTATION
+*----------------------------------------------------------------------*
+*
+*----------------------------------------------------------------------*
+CLASS lcl_screen_adjuster IMPLEMENTATION.
+  METHOD constructor.
+    me->lo_element_remover = io_element_remover.
+  ENDMETHOD.                    "constructor
+  METHOD adjust_screen.
+    lo_element_remover->hide_onli( ).
+  ENDMETHOD.                    "adjust_screen
+ENDCLASS.                    "lcl_screen_adjuster
