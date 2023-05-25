@@ -19,7 +19,8 @@ ENDCLASS.                    "lcl_element_remover DEFINITION
 *----------------------------------------------------------------------*
 CLASS lcl_visibility_dispenser DEFINITION.
   PUBLIC SECTION.
-    METHODS: make_blocks_invisible_init.
+    METHODS: make_blocks_invisible_init,
+             make_block_visible.
 ENDCLASS.                    "lcl_visibility_dispenser DEFINITION
 
 *----------------------------------------------------------------------*
@@ -39,8 +40,10 @@ ENDCLASS.                    "lcl_action_handler DEFINITION
 *----------------------------------------------------------------------*
 CLASS lcl_screen_adjuster DEFINITION.
   PUBLIC SECTION.
-    METHODS: constructor IMPORTING io_element_remover TYPE REF TO lcl_element_remover,
+    METHODS: constructor IMPORTING io_element_remover      TYPE REF TO lcl_element_remover
+                                   io_visibility_dispenser TYPE REF TO lcl_visibility_dispenser,
              adjust_screen.
   PRIVATE SECTION.
-    DATA: lo_element_remover TYPE REF TO lcl_element_remover.
+    DATA: lo_element_remover      TYPE REF TO lcl_element_remover,
+          lo_visibility_dispenser TYPE REF TO lcl_visibility_dispenser.
 ENDCLASS.                    "lcl_screen_adjuster DEFINITION

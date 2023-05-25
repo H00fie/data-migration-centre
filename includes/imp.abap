@@ -34,6 +34,23 @@ CLASS lcl_visibility_dispenser IMPLEMENTATION.
       ENDIF.
     ENDLOOP.
   ENDMETHOD.                    "make_blocks_invisible_init
+
+  METHOD make_block_visible.
+    CASE sy-ucomm. "Cannot operate on function calls. They are cleared when the control leaves the AT SELECTION-SCREEN event.
+      WHEN 'FC1'.
+        LOOP AT SCREEN.
+          IF screen-group1 = 'ID1'.
+            screen-invisible = '1'.
+            screen-input = '0'.
+            MODIFY SCREEN.
+          ELSE.
+            screen-invisible = '0'.
+            screen-input = '1'.
+            MODIFY SCREEN.
+          ENDIF.
+        ENDLOOP.
+    ENDCASE.
+  ENDMETHOD.                    "make_block_visible
 ENDCLASS.                    "lcl_visibility_dispenser IMPLEMENTATION
 
 *----------------------------------------------------------------------*
@@ -58,8 +75,11 @@ ENDCLASS.                    "lcl_action_handler IMPLEMENTATION
 CLASS lcl_screen_adjuster IMPLEMENTATION.
   METHOD constructor.
     me->lo_element_remover = io_element_remover.
+    me->lo_visibility_dispenser = io_visibility_dispenser.
   ENDMETHOD.                    "constructor
+
   METHOD adjust_screen.
     lo_element_remover->hide_onli( ).
+    lo_visibility_dispenser->make_block_visible( ).
   ENDMETHOD.                    "adjust_screen
 ENDCLASS.                    "lcl_screen_adjuster
