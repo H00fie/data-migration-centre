@@ -77,6 +77,10 @@ CLASS lcl_action_handler IMPLEMENTATION.
         set_file_type( i_file_type = 'Text' ).
       WHEN 'FC3'.
         set_file_type( i_file_type = 'Excel' ).
+      WHEN 'FC4'.
+        set_separator_type( i_separator_type = 'Comma' ).
+      WHEN 'FC5'.
+        set_separator_type( i_separator_type = 'Tab' ).
     ENDCASE.
   ENDMETHOD.                    "decide_action
 
