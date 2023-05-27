@@ -74,9 +74,19 @@ CLASS lcl_action_handler IMPLEMENTATION.
   METHOD decide_action.
     CASE sy-ucomm.
       WHEN 'FC2'.
-
+        set_file_type( i_file_type = 'Text' ).
+      WHEN 'FC3'.
+        set_file_type( i_file_type = 'Excel' ).
     ENDCASE.
   ENDMETHOD.                    "decide_action
+
+  METHOD set_file_type.
+    lv_file_type = i_file_type.
+  ENDMETHOD.                    "set_file_type
+
+  METHOD set_separator_type.
+    lv_separator_type = i_separator_type.
+  ENDMETHOD.                    "set_separator_type
 ENDCLASS.                    "lcl_action_handler IMPLEMENTATION
 
 *----------------------------------------------------------------------*
@@ -111,3 +121,13 @@ CLASS lcl_marker IMPLEMENTATION.
     r_marker = lv_marker.
   ENDMETHOD.                    "deploy_the_marker
 ENDCLASS.                    "lcl_marker IMPLEMENTATION
+
+*----------------------------------------------------------------------*
+*       CLASS lcl_element_remover IMPLEMENTATION
+*----------------------------------------------------------------------*
+*
+*----------------------------------------------------------------------*
+CLASS lcl_text_file_migrator IMPLEMENTATION.
+  METHOD lmao.
+  ENDMETHOD.                    "lmao
+ENDCLASS.                    "lcl_text_file_migrator IMPLEMENTATION

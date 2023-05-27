@@ -7,6 +7,16 @@
 *----------------------------------------------------------------------*
 *
 *----------------------------------------------------------------------*
+CLASS lcl_text_file_migrator DEFINITION.
+  PUBLIC SECTION.
+    METHODS: lmao.
+ENDCLASS.                    "lcl_text_file_migrator DEFINITION
+
+*----------------------------------------------------------------------*
+*       CLASS lcl_element_remover DEFINITION
+*----------------------------------------------------------------------*
+*
+*----------------------------------------------------------------------*
 CLASS lcl_element_remover DEFINITION.
   PUBLIC SECTION.
     METHODS: hide_onli.
@@ -31,6 +41,11 @@ ENDCLASS.                    "lcl_visibility_dispenser DEFINITION
 CLASS lcl_action_handler DEFINITION.
   PUBLIC SECTION.
     METHODS: decide_action.
+  PRIVATE SECTION.
+    METHODS: set_file_type      IMPORTING i_file_type      TYPE string,
+             set_separator_type IMPORTING i_separator_type TYPE string.
+    DATA: lv_file_type      TYPE string,
+          lv_separator_type TYPE string.
 ENDCLASS.                    "lcl_action_handler DEFINITION
 
 *----------------------------------------------------------------------*
