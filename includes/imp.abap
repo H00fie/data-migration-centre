@@ -36,7 +36,7 @@ CLASS lcl_visibility_dispenser IMPLEMENTATION.
   ENDMETHOD.                    "make_blocks_invisible_init
 
   METHOD make_block_visible.
-    CASE sy-ucomm. "Cannot operate on function calls. They are cleared when the control leaves the AT SELECTION-SCREEN event.
+    CASE i_marker. "Cannot operate on function calls. SY-UCOMM is cleared when the control leaves the AT SELECTION-SCREEN event.
       WHEN 'FC1'.
         LOOP AT SCREEN.
           IF screen-group1 = 'ID1'.
@@ -76,10 +76,26 @@ CLASS lcl_screen_adjuster IMPLEMENTATION.
   METHOD constructor.
     me->lo_element_remover = io_element_remover.
     me->lo_visibility_dispenser = io_visibility_dispenser.
+    me->lo_marker = io_marker.
   ENDMETHOD.                    "constructor
 
   METHOD adjust_screen.
     lo_element_remover->hide_onli( ).
-    lo_visibility_dispenser->make_block_visible( ).
+    lo_visibility_dispenser->make_block_visible( i_marker = lo_marker->deploy_the_marker( ) ).
   ENDMETHOD.                    "adjust_screen
-ENDCLASS.                    "lcl_screen_adjuster
+ENDCLASS.                    "lcl_screen_adjuster IMPLEMENTATION
+
+*----------------------------------------------------------------------*
+*       CLASS lcl_marker IMPLEMENTATION
+*----------------------------------------------------------------------*
+*
+*----------------------------------------------------------------------*
+CLASS lcl_marker IMPLEMENTATION.
+  METHOD set_the_marker.
+    lv_marker = sy-ucomm.
+  ENDMETHOD.                    "set_the_marker
+
+  METHOD deploy_the_marker.
+    r_marker = lv_marker.
+  ENDMETHOD.                    "deploy_the_marker
+ENDCLASS.                    "lcl_marker IMPLEMENTATION
