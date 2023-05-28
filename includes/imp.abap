@@ -93,6 +93,12 @@ CLASS lcl_action_handler IMPLEMENTATION.
         set_separator_type( i_separator_type = 'Comma' ).
       WHEN 'FC5'.
         set_separator_type( i_separator_type = 'Tab' ).
+      WHEN 'FC6'.
+        set_file_structure( i_file_structure = 'KNA1' ).
+      WHEN 'FC7'.
+        set_file_structure( i_file_structure = 'VBAK' ).
+      WHEN 'FC8'.
+        set_file_structure( i_file_structure = 'VBAP' ).
     ENDCASE.
   ENDMETHOD.                    "decide_action
 
