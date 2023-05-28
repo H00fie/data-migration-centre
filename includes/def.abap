@@ -44,10 +44,12 @@ CLASS lcl_action_handler DEFINITION.
   PRIVATE SECTION.
     METHODS: set_file_type      IMPORTING i_file_type      TYPE string,
              set_separator_type IMPORTING i_separator_type TYPE string,
-             set_file_structure IMPORTING i_file_structure TYPE string.
+             set_file_structure IMPORTING i_file_structure TYPE string,
+             set_file_location  IMPORTING i_file_location  TYPE string.
     DATA: lv_file_type      TYPE string,
           lv_separator_type TYPE string,
-          lv_file_structure TYPE string.
+          lv_file_structure TYPE string,
+          lv_file_location  TYPE string.
 ENDCLASS.                    "lcl_action_handler DEFINITION
 
 *----------------------------------------------------------------------*
