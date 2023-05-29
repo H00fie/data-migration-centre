@@ -27,7 +27,7 @@ ENDCLASS.                    "lcl_element_remover IMPLEMENTATION
 CLASS lcl_visibility_dispenser IMPLEMENTATION.
   METHOD: make_blocks_invisible_init.
     LOOP AT SCREEN.
-      IF screen-group1 = 'ID2' OR screen-group1 = 'ID3' OR screen-group1 = 'ID4' OR screen-group1 = 'ID5'.
+      IF screen-group1 = 'ID2' OR screen-group1 = 'ID3' OR screen-group1 = 'ID4' OR screen-group1 = 'ID5' OR screen-group1 = 'ID6'.
         screen-invisible = '1'.
         screen-input = '0'.
         MODIFY SCREEN.
@@ -39,7 +39,7 @@ CLASS lcl_visibility_dispenser IMPLEMENTATION.
     CASE i_marker. "Cannot operate on function calls. SY-UCOMM is cleared when the control leaves the AT SELECTION-SCREEN event.
       WHEN 'FC1'.
         LOOP AT SCREEN.
-          IF screen-group1 = 'ID1' OR screen-group1 = 'ID3' OR screen-group1 = 'ID4' OR screen-group1 = 'ID5'.
+          IF screen-group1 = 'ID1' OR screen-group1 = 'ID3' OR screen-group1 = 'ID4' OR screen-group1 = 'ID5' OR screen-group1 = 'ID6'.
             screen-invisible = '1'.
             screen-input = '0'.
             MODIFY SCREEN.
@@ -51,7 +51,7 @@ CLASS lcl_visibility_dispenser IMPLEMENTATION.
         ENDLOOP.
       WHEN 'FC2'.
         LOOP AT SCREEN.
-          IF screen-group1 = 'ID1' OR screen-group1 = 'ID2' OR screen-group1 = 'ID4' OR screen-group1 = 'ID5'.
+          IF screen-group1 = 'ID1' OR screen-group1 = 'ID2' OR screen-group1 = 'ID4' OR screen-group1 = 'ID5' OR screen-group1 = 'ID6'.
             screen-invisible = '1'.
             screen-input = '0'.
             MODIFY SCREEN.
@@ -63,7 +63,7 @@ CLASS lcl_visibility_dispenser IMPLEMENTATION.
         ENDLOOP.
       WHEN 'FC4'.
         LOOP AT SCREEN.
-          IF screen-group1 = 'ID1' OR screen-group1 = 'ID2' OR screen-group1 = 'ID3' OR screen-group1 = 'ID5'.
+          IF screen-group1 = 'ID1' OR screen-group1 = 'ID2' OR screen-group1 = 'ID3' OR screen-group1 = 'ID5' OR screen-group1 = 'ID6'.
             screen-invisible = '1'.
             screen-input = '0'.
             MODIFY SCREEN.
@@ -75,7 +75,7 @@ CLASS lcl_visibility_dispenser IMPLEMENTATION.
         ENDLOOP.
       WHEN 'FC6'.
         LOOP AT SCREEN.
-          IF screen-group1 = 'ID1' OR screen-group1 = 'ID2' OR screen-group1 = 'ID3' OR screen-group1 = 'ID4'.
+          IF screen-group1 = 'ID1' OR screen-group1 = 'ID2' OR screen-group1 = 'ID3' OR screen-group1 = 'ID4' OR screen-group1 = 'ID6'.
             screen-invisible = '1'.
             screen-input = '0'.
             MODIFY SCREEN.
@@ -87,7 +87,7 @@ CLASS lcl_visibility_dispenser IMPLEMENTATION.
         ENDLOOP.
       WHEN 'FC7'.
         LOOP AT SCREEN.
-          IF screen-group1 = 'ID1' OR screen-group1 = 'ID2' OR screen-group1 = 'ID3' OR screen-group1 = 'ID4'.
+          IF screen-group1 = 'ID1' OR screen-group1 = 'ID2' OR screen-group1 = 'ID3' OR screen-group1 = 'ID4' OR screen-group1 = 'ID6'.
             screen-invisible = '1'.
             screen-input = '0'.
             MODIFY SCREEN.
@@ -99,7 +99,19 @@ CLASS lcl_visibility_dispenser IMPLEMENTATION.
         ENDLOOP.
       WHEN 'FC8'.
         LOOP AT SCREEN.
-          IF screen-group1 = 'ID1' OR screen-group1 = 'ID2' OR screen-group1 = 'ID3' OR screen-group1 = 'ID4'.
+          IF screen-group1 = 'ID1' OR screen-group1 = 'ID2' OR screen-group1 = 'ID3' OR screen-group1 = 'ID4' OR screen-group1 = 'ID6'.
+            screen-invisible = '1'.
+            screen-input = '0'.
+            MODIFY SCREEN.
+          ELSE.
+            screen-invisible = '0'.
+            screen-input = '1'.
+            MODIFY SCREEN.
+          ENDIF.
+        ENDLOOP.
+      WHEN 'FC9'.
+        LOOP AT SCREEN.
+          IF screen-group1 = 'ID1' OR screen-group1 = 'ID2' OR screen-group1 = 'ID3' OR screen-group1 = 'ID4' OR screen-group1 = 'ID5'.
             screen-invisible = '1'.
             screen-input = '0'.
             MODIFY SCREEN.
