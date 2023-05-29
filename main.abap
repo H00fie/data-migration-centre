@@ -13,6 +13,7 @@ INITIALIZATION.
   DATA(lo_visibility_dispenser) = NEW lcl_visibility_dispenser( ).
   DATA(lo_element_remover)      = NEW lcl_element_remover( ).
   DATA(lo_marker)               = NEW lcl_marker( ).
+  DATA(lo_action_handler)       = NEW lcl_action_handler( ).
   DATA(lo_screen_adjuster)      = NEW lcl_screen_adjuster( io_element_remover      = lo_element_remover
                                                            io_visibility_dispenser = lo_visibility_dispenser
                                                            io_marker               = lo_marker ).
@@ -23,5 +24,8 @@ AT SELECTION-SCREEN OUTPUT.
 
 AT SELECTION-SCREEN.
   lo_marker->set_the_marker( ). "SY-UCOMM is saved in the class' field.
-  DATA(lo_action_handler) = NEW lcl_action_handler( ).
   lo_action_handler->decide_action( ).
+
+AT SELECTION-SCREEN ON VALUE-REQUEST FOR p_f_path.
+  DATA(lo_f4_help_provider) = NEW lcl_f4_help_provider( ).
+  lo_f4_help_provider->provide_f4_help( ).

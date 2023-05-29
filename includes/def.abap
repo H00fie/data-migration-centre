@@ -81,3 +81,13 @@ CLASS lcl_screen_adjuster DEFINITION.
           lo_visibility_dispenser TYPE REF TO lcl_visibility_dispenser,
           lo_marker               TYPE REF TO lcl_marker.
 ENDCLASS.                    "lcl_screen_adjuster DEFINITION
+
+*----------------------------------------------------------------------*
+*       CLASS lcl_f4_help_provider DEFINITION
+*----------------------------------------------------------------------*
+*
+*----------------------------------------------------------------------*
+CLASS lcl_f4_help_provider DEFINITION.
+  PUBLIC SECTION.
+    METHODS: provide_f4_help.
+ENDCLASS.                    "lcl_f4_help_provider DEFINITION

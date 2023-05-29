@@ -213,3 +213,20 @@ CLASS lcl_text_file_migrator IMPLEMENTATION.
   METHOD lmao.
   ENDMETHOD.                    "lmao
 ENDCLASS.                    "lcl_text_file_migrator IMPLEMENTATION
+
+*----------------------------------------------------------------------*
+*       CLASS lcl_f4_help_provider IMPLEMENTATION
+*----------------------------------------------------------------------*
+*
+*----------------------------------------------------------------------*
+CLASS lcl_f4_help_provider IMPLEMENTATION.
+  METHOD provide_f4_help.
+    DATA: lv_path TYPE ibipparms-path.
+    CALL FUNCTION 'F4_FILENAME'
+     IMPORTING
+       FILE_NAME           = lv_path.
+    IF lv_path IS NOT INITIAL.
+      p_f_path = lv_path.
+    ENDIF.
+  ENDMETHOD.                    "provide_f4_help
+ENDCLASS.                    "lcl_f4_help_provider IMPLEMENTATION
