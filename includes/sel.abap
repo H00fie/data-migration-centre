@@ -92,6 +92,13 @@ SELECTION-SCREEN BEGIN OF BLOCK bk6 WITH FRAME TITLE TEXT-026.
   SELECTION-SCREEN END OF LINE.
 SELECTION-SCREEN END OF BLOCK bk6.
 
+SELECTION-SCREEN BEGIN OF BLOCK bk7 WITH FRAME TITLE TEXT-029.
+  SELECTION-SCREEN SKIP.
+  SELECTION-SCREEN BEGIN OF LINE.
+    PARAMETERS: p_f_path TYPE string MODIF ID id7.
+  SELECTION-SCREEN END OF LINE.
+SELECTION-SCREEN END OF BLOCK bk7.
+
 *TEXT ELEMENTS TO BE INCLUDED IN "TEXTS".
 *-----------Text Symbols Sheet-----------
 *000 - Welcome to the Data Migration Centre.
@@ -123,3 +130,4 @@ SELECTION-SCREEN END OF BLOCK bk6.
 *026 - Choose the preferred migration technique.
 *027 - Direct Input Method
 *028 - Call Transaction
+*029 - Provide the path to the file with the data.
