@@ -268,13 +268,14 @@ CLASS lcl_marker IMPLEMENTATION.
 ENDCLASS.                    "lcl_marker IMPLEMENTATION
 
 *----------------------------------------------------------------------*
-*       CLASS lcl_element_remover IMPLEMENTATION
+*       CLASS lcl_direct_input_technique_ini IMPLEMENTATION
 *----------------------------------------------------------------------*
 *
 *----------------------------------------------------------------------*
 CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
   METHOD initialize_the_migration.
-    upload__file( ).
+    upload_file( ).
+    move_data_to_prepared_table( ).
   ENDMETHOD.                    "initialize_the_migration
 
   METHOD upload_file.
@@ -284,6 +285,18 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
       TABLES
         data_tab                      = lt_temp1.
   ENDMETHOD.                    "upload_file
+
+  METHOD move_data_to_prepared_table.
+    LOOP AT lt_temp1 INTO lwa_temp1.
+      CLEAR lwa_temp2.
+      SPLIT lwa_temp1-string AT ',' INTO lwa_temp2-kunnr "Later on I can feed this method the separator variable from the action handler instead of hardcoding a comma.
+                                         lwa_temp2-land1
+                                         lwa_temp2-regio
+                                         lwa_temp2-ort01
+                                         lwa_temp2-stras.
+      APPEND lwa_temp2 TO lt_temp2.
+    ENDLOOP.
+  ENDMETHOD.                    "move_data_to_prepared_table
 ENDCLASS.                    "lcl_direct_input_technique_ini IMPLEMENTATION
 
 *----------------------------------------------------------------------*
