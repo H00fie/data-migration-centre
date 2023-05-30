@@ -11,7 +11,7 @@ CLASS lcl_direct_input_technique_ini DEFINITION.
   PUBLIC SECTION.
     METHODS: initialize_the_migration,
              upload_file,
-             move_data_to_prepared_table.
+             move_data_to_tab_with_sep_flds.
   PRIVATE SECTION.
     TYPES: BEGIN OF t_temp,
       string TYPE string,
