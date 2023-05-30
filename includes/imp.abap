@@ -297,6 +297,18 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
       APPEND lwa_temp2 TO lt_temp2.
     ENDLOOP.
   ENDMETHOD.                    "move_data_to_tab_with_sep_flds
+
+  METHOD move_data_to_tab_like_target.
+    LOOP AT lt_temp2 INTO lwa_temp2.
+      CLEAR lwa_temp3.
+      lwa_temp3-kunnr = lwa_temp2-kunnr.
+      lwa_temp3-land1 = lwa_temp2-land1.
+      lwa_temp3-regio = lwa_temp2-regio.
+      lwa_temp3-ort01 = lwa_temp2-ort01.
+      lwa_temp3-stras = lwa_temp2-stras.
+      APPEND lwa_temp3 TO lt_temp3.
+    ENDLOOP.
+  ENDMETHOD.                    "move_data_to_tab_like_target
 ENDCLASS.                    "lcl_direct_input_technique_ini IMPLEMENTATION
 
 *----------------------------------------------------------------------*
