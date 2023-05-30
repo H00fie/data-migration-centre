@@ -3,13 +3,14 @@
 *&---------------------------------------------------------------------*
 
 *----------------------------------------------------------------------*
-*       CLASS lcl_element_remover DEFINITION
+*       CLASS lcl_direct_input_technique_ini DEFINITION
 *----------------------------------------------------------------------*
 *
 *----------------------------------------------------------------------*
 CLASS lcl_direct_input_technique_ini DEFINITION.
   PUBLIC SECTION.
-    METHODS: upload_file.
+    METHODS: initialize_the_migration,
+             upload_file.
   PRIVATE SECTION.
     TYPES: BEGIN OF t_temp,
       string TYPE string,

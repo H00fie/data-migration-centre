@@ -213,7 +213,7 @@ CLASS lcl_action_handler IMPLEMENTATION.
       WHEN 'FC10'.
         set_file_location( i_file_location = 'Application server' ).
       WHEN 'FC13'.
-        lo_direct_input_technique_ini->upload_file( ).
+        lo_direct_input_technique_ini->initialize_the_migration( ).
     ENDCASE.
   ENDMETHOD.                    "decide_action
 
@@ -273,6 +273,10 @@ ENDCLASS.                    "lcl_marker IMPLEMENTATION
 *
 *----------------------------------------------------------------------*
 CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
+  METHOD initialize_the_migration.
+    upload__file( ).
+  ENDMETHOD.                    "initialize_the_migration
+
   METHOD upload_file.
     CALL FUNCTION 'GUI_UPLOAD'
       EXPORTING
