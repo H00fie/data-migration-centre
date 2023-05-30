@@ -7,10 +7,28 @@
 *----------------------------------------------------------------------*
 *
 *----------------------------------------------------------------------*
-CLASS lcl_text_file_migrator DEFINITION.
+CLASS lcl_direct_input_technique_ini DEFINITION.
   PUBLIC SECTION.
-    METHODS: lmao.
-ENDCLASS.                    "lcl_text_file_migrator DEFINITION
+    METHODS: upload_file.
+  PRIVATE SECTION.
+    TYPES: BEGIN OF t_temp,
+      string TYPE string,
+    END OF t_temp.
+    TYPES: BEGIN OF t_temp2,
+      kunnr TYPE kna1-kunnr,
+      name1 TYPE kna1-name1,
+      land1 TYPE kna1-land1,
+      regio TYPE kna1-regio,
+      ort01 TYPE kna1-ort01,
+      stras TYPE kna1-stras,
+    END OF t_temp2.
+    DATA: lt_temp1  TYPE TABLE OF t_temp,
+          lwa_temp1 TYPE t_temp,
+          lt_temp2  TYPE TABLE OF t_temp2,
+          lwa_temp2 TYPE t_temp2,
+          lt_temp3  TYPE TABLE OF kna1,
+          lwa_temp3 TYPE kna1.
+ENDCLASS.                    "lcl_direct_input_technique_ini DEFINITION
 
 *----------------------------------------------------------------------*
 *       CLASS lcl_element_remover DEFINITION
@@ -40,16 +58,18 @@ ENDCLASS.                    "lcl_visibility_dispenser DEFINITION
 *----------------------------------------------------------------------*
 CLASS lcl_action_handler DEFINITION.
   PUBLIC SECTION.
-    METHODS: decide_action.
+    METHODS: constructor IMPORTING io_direct_input_technique_ini TYPE REF TO lcl_direct_input_technique_ini,
+             decide_action.
   PRIVATE SECTION.
     METHODS: set_file_type      IMPORTING i_file_type      TYPE string,
              set_separator_type IMPORTING i_separator_type TYPE string,
              set_file_structure IMPORTING i_file_structure TYPE string,
              set_file_location  IMPORTING i_file_location  TYPE string.
-    DATA: lv_file_type      TYPE string,
-          lv_separator_type TYPE string,
-          lv_file_structure TYPE string,
-          lv_file_location  TYPE string.
+    DATA: lo_direct_input_technique_ini TYPE REF TO lcl_direct_input_technique_ini,
+          lv_file_type                  TYPE string,
+          lv_separator_type             TYPE string,
+          lv_file_structure             TYPE string,
+          lv_file_location              TYPE string.
 ENDCLASS.                    "lcl_action_handler DEFINITION
 
 *----------------------------------------------------------------------*

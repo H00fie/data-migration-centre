@@ -27,7 +27,12 @@ ENDCLASS.                    "lcl_element_remover IMPLEMENTATION
 CLASS lcl_visibility_dispenser IMPLEMENTATION.
   METHOD: make_blocks_invisible_init.
     LOOP AT SCREEN.
-      IF screen-group1 = 'ID2' OR screen-group1 = 'ID3' OR screen-group1 = 'ID4' OR screen-group1 = 'ID5' OR screen-group1 = 'ID6'.
+      IF screen-group1 = 'ID2' OR
+         screen-group1 = 'ID3' OR
+         screen-group1 = 'ID4' OR
+         screen-group1 = 'ID5' OR
+         screen-group1 = 'ID6' OR
+         screen-group1 = 'ID7'.
         screen-invisible = '1'.
         screen-input = '0'.
         MODIFY SCREEN.
@@ -39,7 +44,12 @@ CLASS lcl_visibility_dispenser IMPLEMENTATION.
     CASE i_marker. "Cannot operate on function calls. SY-UCOMM is cleared when the control leaves the AT SELECTION-SCREEN event.
       WHEN 'FC1'.
         LOOP AT SCREEN.
-          IF screen-group1 = 'ID1' OR screen-group1 = 'ID3' OR screen-group1 = 'ID4' OR screen-group1 = 'ID5' OR screen-group1 = 'ID6'.
+          IF screen-group1 = 'ID1' OR
+             screen-group1 = 'ID3' OR
+             screen-group1 = 'ID4' OR
+             screen-group1 = 'ID5' OR
+             screen-group1 = 'ID6' OR
+             screen-group1 = 'ID7'.
             screen-invisible = '1'.
             screen-input = '0'.
             MODIFY SCREEN.
@@ -51,7 +61,12 @@ CLASS lcl_visibility_dispenser IMPLEMENTATION.
         ENDLOOP.
       WHEN 'FC2'.
         LOOP AT SCREEN.
-          IF screen-group1 = 'ID1' OR screen-group1 = 'ID2' OR screen-group1 = 'ID4' OR screen-group1 = 'ID5' OR screen-group1 = 'ID6'.
+          IF screen-group1 = 'ID1' OR
+             screen-group1 = 'ID2' OR
+             screen-group1 = 'ID4' OR
+             screen-group1 = 'ID5' OR
+             screen-group1 = 'ID6' OR
+             screen-group1 = 'ID7'.
             screen-invisible = '1'.
             screen-input = '0'.
             MODIFY SCREEN.
@@ -63,7 +78,12 @@ CLASS lcl_visibility_dispenser IMPLEMENTATION.
         ENDLOOP.
       WHEN 'FC4'.
         LOOP AT SCREEN.
-          IF screen-group1 = 'ID1' OR screen-group1 = 'ID2' OR screen-group1 = 'ID3' OR screen-group1 = 'ID5' OR screen-group1 = 'ID6'.
+          IF screen-group1 = 'ID1' OR
+             screen-group1 = 'ID2' OR
+             screen-group1 = 'ID3' OR
+             screen-group1 = 'ID5' OR
+             screen-group1 = 'ID6' OR
+             screen-group1 = 'ID7'.
             screen-invisible = '1'.
             screen-input = '0'.
             MODIFY SCREEN.
@@ -75,7 +95,12 @@ CLASS lcl_visibility_dispenser IMPLEMENTATION.
         ENDLOOP.
       WHEN 'FC6'.
         LOOP AT SCREEN.
-          IF screen-group1 = 'ID1' OR screen-group1 = 'ID2' OR screen-group1 = 'ID3' OR screen-group1 = 'ID4' OR screen-group1 = 'ID6'.
+          IF screen-group1 = 'ID1' OR
+             screen-group1 = 'ID2' OR
+             screen-group1 = 'ID3' OR
+             screen-group1 = 'ID4' OR
+             screen-group1 = 'ID6' OR
+             screen-group1 = 'ID7'.
             screen-invisible = '1'.
             screen-input = '0'.
             MODIFY SCREEN.
@@ -87,7 +112,12 @@ CLASS lcl_visibility_dispenser IMPLEMENTATION.
         ENDLOOP.
       WHEN 'FC7'.
         LOOP AT SCREEN.
-          IF screen-group1 = 'ID1' OR screen-group1 = 'ID2' OR screen-group1 = 'ID3' OR screen-group1 = 'ID4' OR screen-group1 = 'ID6'.
+          IF screen-group1 = 'ID1' OR
+             screen-group1 = 'ID2' OR
+             screen-group1 = 'ID3' OR
+             screen-group1 = 'ID4' OR
+             screen-group1 = 'ID6' OR
+             screen-group1 = 'ID7'.
             screen-invisible = '1'.
             screen-input = '0'.
             MODIFY SCREEN.
@@ -99,7 +129,12 @@ CLASS lcl_visibility_dispenser IMPLEMENTATION.
         ENDLOOP.
       WHEN 'FC8'.
         LOOP AT SCREEN.
-          IF screen-group1 = 'ID1' OR screen-group1 = 'ID2' OR screen-group1 = 'ID3' OR screen-group1 = 'ID4' OR screen-group1 = 'ID6'.
+          IF screen-group1 = 'ID1' OR
+             screen-group1 = 'ID2' OR
+             screen-group1 = 'ID3' OR
+             screen-group1 = 'ID4' OR
+             screen-group1 = 'ID6' OR
+             screen-group1 = 'ID7'.
             screen-invisible = '1'.
             screen-input = '0'.
             MODIFY SCREEN.
@@ -111,7 +146,29 @@ CLASS lcl_visibility_dispenser IMPLEMENTATION.
         ENDLOOP.
       WHEN 'FC9'.
         LOOP AT SCREEN.
-          IF screen-group1 = 'ID1' OR screen-group1 = 'ID2' OR screen-group1 = 'ID3' OR screen-group1 = 'ID4' OR screen-group1 = 'ID5'.
+          IF screen-group1 = 'ID1' OR
+             screen-group1 = 'ID2' OR
+             screen-group1 = 'ID3' OR
+             screen-group1 = 'ID4' OR
+             screen-group1 = 'ID5' OR
+             screen-group1 = 'ID7'.
+            screen-invisible = '1'.
+            screen-input = '0'.
+            MODIFY SCREEN.
+          ELSE.
+            screen-invisible = '0'.
+            screen-input = '1'.
+            MODIFY SCREEN.
+          ENDIF.
+        ENDLOOP.
+      WHEN 'FC11'.
+        LOOP AT SCREEN.
+          IF screen-group1 = 'ID1' OR
+             screen-group1 = 'ID2' OR
+             screen-group1 = 'ID3' OR
+             screen-group1 = 'ID4' OR
+             screen-group1 = 'ID5' OR
+             screen-group1 = 'ID6'.
             screen-invisible = '1'.
             screen-input = '0'.
             MODIFY SCREEN.
@@ -131,6 +188,10 @@ ENDCLASS.                    "lcl_visibility_dispenser IMPLEMENTATION
 *
 *----------------------------------------------------------------------*
 CLASS lcl_action_handler IMPLEMENTATION.
+  METHOD constructor.
+    me->lo_direct_input_technique_ini = io_direct_input_technique_ini.
+  ENDMETHOD.                    "constructor
+
   METHOD decide_action.
     CASE sy-ucomm.
       WHEN 'FC2'.
@@ -151,6 +212,8 @@ CLASS lcl_action_handler IMPLEMENTATION.
         set_file_location( i_file_location = 'Locally' ).
       WHEN 'FC10'.
         set_file_location( i_file_location = 'Application server' ).
+      WHEN 'FC13'.
+        lo_direct_input_technique_ini->upload_file( ).
     ENDCASE.
   ENDMETHOD.                    "decide_action
 
@@ -209,10 +272,15 @@ ENDCLASS.                    "lcl_marker IMPLEMENTATION
 *----------------------------------------------------------------------*
 *
 *----------------------------------------------------------------------*
-CLASS lcl_text_file_migrator IMPLEMENTATION.
-  METHOD lmao.
-  ENDMETHOD.                    "lmao
-ENDCLASS.                    "lcl_text_file_migrator IMPLEMENTATION
+CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
+  METHOD upload_file.
+    CALL FUNCTION 'GUI_UPLOAD'
+      EXPORTING
+        filename                      = p_f_path
+      TABLES
+        data_tab                      = lt_temp1.
+  ENDMETHOD.                    "upload_file
+ENDCLASS.                    "lcl_direct_input_technique_ini IMPLEMENTATION
 
 *----------------------------------------------------------------------*
 *       CLASS lcl_f4_help_provider IMPLEMENTATION
