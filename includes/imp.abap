@@ -312,6 +312,11 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
   
   METHOD move_data_to_database_table.
     MODIFY kna1 FROM TABLE lt_temp3.
+    IF sy-subrc = 0.
+      MESSAGE i000(data_migration_centre).
+    ELSE.
+      MESSAGE i001(data_migration_centre).
+    ENDIF.
   ENDMETHOD.                    "move_data_to_database_table
 ENDCLASS.                    "lcl_direct_input_technique_ini IMPLEMENTATION
 
