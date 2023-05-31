@@ -331,3 +331,10 @@ CLASS lcl_f4_help_provider IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.                    "provide_f4_help
 ENDCLASS.                    "lcl_f4_help_provider IMPLEMENTATION
+
+*MESSAGES TO BE INCLUDED IN THE MESSAGE CLASS.
+*-----------Attributes Sheet-----------
+*Short description - Messages for Data Migration Centre.
+*---------------Messages---------------
+*000 - The data has been moved to the KNA1 database table.
+*001 - The moving of the data to the database table has failed.
