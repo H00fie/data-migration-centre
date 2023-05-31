@@ -309,6 +309,10 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
       APPEND lwa_temp3 TO lt_temp3.
     ENDLOOP.
   ENDMETHOD.                    "move_data_to_tab_like_target
+  
+  METHOD move_data_to_database_table.
+    MODIFY kna1 FROM TABLE lt_temp3.
+  ENDMETHOD.                    "move_data_to_database_table
 ENDCLASS.                    "lcl_direct_input_technique_ini IMPLEMENTATION
 
 *----------------------------------------------------------------------*
