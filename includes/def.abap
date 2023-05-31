@@ -9,12 +9,12 @@
 *----------------------------------------------------------------------*
 CLASS lcl_direct_input_technique_ini DEFINITION.
   PUBLIC SECTION.
-    METHODS: initialize_the_migration,
-             upload_file,
-             move_data_to_tab_with_sep_flds,
+    METHODS: initialize_the_migration IMPORTING i_separator_type TYPE string.
+  PRIVATE SECTION.
+    METHODS: upload_file,
+             move_data_to_tab_with_sep_flds IMPORTING i_separator_type TYPE string,
              move_data_to_tab_like_target,
              move_data_to_database_table.
-  PRIVATE SECTION.
     TYPES: BEGIN OF t_temp,
       string TYPE string,
     END OF t_temp.
@@ -33,6 +33,11 @@ CLASS lcl_direct_input_technique_ini DEFINITION.
           lt_temp3  TYPE TABLE OF kna1,
           lwa_temp3 TYPE kna1.
 ENDCLASS.                    "lcl_direct_input_technique_ini DEFINITION
+
+*CLASS lcl_call_trans_technique_ini DEFINITION.
+*  PUBLIC SECTION.
+*    METHODS: initialize_the_migration.
+*ENDCLASS.                    "lcl_call_trans_technique_ini DEFINITION
 
 *----------------------------------------------------------------------*
 *       CLASS lcl_element_remover DEFINITION

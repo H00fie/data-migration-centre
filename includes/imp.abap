@@ -213,7 +213,7 @@ CLASS lcl_action_handler IMPLEMENTATION.
       WHEN 'FC10'.
         set_file_location( i_file_location = 'Application server' ).
       WHEN 'FC13'.
-        lo_direct_input_technique_ini->initialize_the_migration( ).
+        lo_direct_input_technique_ini->initialize_the_migration( i_separator_type = lv_separator_type ).
     ENDCASE.
   ENDMETHOD.                    "decide_action
 
@@ -275,7 +275,8 @@ ENDCLASS.                    "lcl_marker IMPLEMENTATION
 CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
   METHOD initialize_the_migration.
     upload_file( ).
-    move_data_to_tab_with_sep_flds( ).
+    move_data_to_tab_with_sep_flds( i_separator_type = i_separator_type ).
+    move_data_to_tab_like_target( ).
   ENDMETHOD.                    "initialize_the_migration
 
   METHOD upload_file.
@@ -289,11 +290,11 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
   METHOD move_data_to_tab_with_sep_flds.
     LOOP AT lt_temp1 INTO lwa_temp1.
       CLEAR lwa_temp2.
-      SPLIT lwa_temp1-string AT ',' INTO lwa_temp2-kunnr "Later on I can feed this method the separator variable from the action handler instead of hardcoding a comma.
-                                         lwa_temp2-land1
-                                         lwa_temp2-regio
-                                         lwa_temp2-ort01
-                                         lwa_temp2-stras.
+      SPLIT lwa_temp1-string AT i_separator_type INTO lwa_temp2-kunnr "Later on I can feed this method the separator variable from the action handler instead of hardcoding a comma.
+                                                      lwa_temp2-land1
+                                                      lwa_temp2-regio
+                                                      lwa_temp2-ort01
+                                                      lwa_temp2-stras.
       APPEND lwa_temp2 TO lt_temp2.
     ENDLOOP.
   ENDMETHOD.                    "move_data_to_tab_with_sep_flds
@@ -309,7 +310,7 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
       APPEND lwa_temp3 TO lt_temp3.
     ENDLOOP.
   ENDMETHOD.                    "move_data_to_tab_like_target
-  
+
   METHOD move_data_to_database_table.
     MODIFY kna1 FROM TABLE lt_temp3.
     IF sy-subrc = 0.
