@@ -213,7 +213,8 @@ CLASS lcl_action_handler IMPLEMENTATION.
       WHEN 'FC10'.
         set_file_location( i_file_location = 'Application server' ).
       WHEN 'FC13'.
-        lo_direct_input_technique_ini->initialize_the_migration( i_separator_type = lv_separator_type ).
+        lo_direct_input_technique_ini->initialize_the_migration( i_separator_type = lv_separator_type
+                                                                 i_file_structure = lv_file_structure ).
     ENDCASE.
   ENDMETHOD.                    "decide_action
 
@@ -275,7 +276,8 @@ ENDCLASS.                    "lcl_marker IMPLEMENTATION
 CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
   METHOD initialize_the_migration.
     upload_file( ).
-    move_data_to_tab_with_sep_flds( i_separator_type = i_separator_type ).
+    move_data_to_tab_with_sep_flds( i_separator_type = i_separator_type
+                                    i_file_structure = i_file_structure ).
     move_data_to_tab_like_target( ).
   ENDMETHOD.                    "initialize_the_migration
 
@@ -284,39 +286,42 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
       EXPORTING
         filename                      = p_f_path
       TABLES
-        data_tab                      = lt_temp1.
+        data_tab                      = lt_initial_tab.
   ENDMETHOD.                    "upload_file
 
   METHOD move_data_to_tab_with_sep_flds.
-    LOOP AT lt_temp1 INTO lwa_temp1.
-      CLEAR lwa_temp2.
-      SPLIT lwa_temp1-string AT i_separator_type INTO lwa_temp2-kunnr "Later on I can feed this method the separator variable from the action handler instead of hardcoding a comma.
-                                                      lwa_temp2-land1
-                                                      lwa_temp2-regio
-                                                      lwa_temp2-ort01
-                                                      lwa_temp2-stras.
-      APPEND lwa_temp2 TO lt_temp2.
-    ENDLOOP.
+    CASE i_file_structure.
+      WHEN 'KNA1'.
+        LOOP AT lt_initial_tab INTO lwa_initial_tab.
+          CLEAR lwa_initial_kna1_tab.
+          SPLIT lwa_initial_tab-string AT i_separator_type INTO lwa_initial_kna1_tab-kunnr "Later on I can feed this method the separator variable from the action handler instead of hardcoding a comma.
+                                                                     lwa_initial_kna1_tab-land1
+                                                                     lwa_initial_kna1_tab-regio
+                                                                     lwa_initial_kna1_tab-ort01
+                                                                     lwa_initial_kna1_tab-stras.
+         APPEND lwa_initial_kna1_tab TO lt_initial_kna1_tab.
+       ENDLOOP.
+    ENDCASE.
   ENDMETHOD.                    "move_data_to_tab_with_sep_flds
 
   METHOD move_data_to_tab_like_target.
-    LOOP AT lt_temp2 INTO lwa_temp2.
-      CLEAR lwa_temp3.
-      lwa_temp3-kunnr = lwa_temp2-kunnr.
-      lwa_temp3-land1 = lwa_temp2-land1.
-      lwa_temp3-regio = lwa_temp2-regio.
-      lwa_temp3-ort01 = lwa_temp2-ort01.
-      lwa_temp3-stras = lwa_temp2-stras.
-      APPEND lwa_temp3 TO lt_temp3.
+    LOOP AT lt_initial_kna1_tab INTO lwa_initial_kna1_tab.
+      CLEAR lwa_final_kna1_tab.
+      lwa_final_kna1_tab-kunnr = lwa_initial_kna1_tab-kunnr.
+      lwa_final_kna1_tab-land1 = lwa_initial_kna1_tab-land1.
+      lwa_final_kna1_tab-regio = lwa_initial_kna1_tab-regio.
+      lwa_final_kna1_tab-ort01 = lwa_initial_kna1_tab-ort01.
+      lwa_final_kna1_tab-stras = lwa_initial_kna1_tab-stras.
+      APPEND lwa_final_kna1_tab TO lt_final_kna1_tab.
     ENDLOOP.
   ENDMETHOD.                    "move_data_to_tab_like_target
 
   METHOD move_data_to_database_table.
-    MODIFY kna1 FROM TABLE lt_temp3.
+    MODIFY kna1 FROM TABLE lt_final_kna1_tab.
     IF sy-subrc = 0.
-      MESSAGE i000(data_migration_centre).
+      MESSAGE i000(zbmierzwi_test_msg2).
     ELSE.
-      MESSAGE i001(data_migration_centre).
+      MESSAGE i001(zbmierzwi_test_msg2).
     ENDIF.
   ENDMETHOD.                    "move_data_to_database_table
 ENDCLASS.                    "lcl_direct_input_technique_ini IMPLEMENTATION

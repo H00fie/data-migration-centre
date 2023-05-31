@@ -9,29 +9,31 @@
 *----------------------------------------------------------------------*
 CLASS lcl_direct_input_technique_ini DEFINITION.
   PUBLIC SECTION.
-    METHODS: initialize_the_migration IMPORTING i_separator_type TYPE string.
+    METHODS: initialize_the_migration IMPORTING i_separator_type TYPE string
+                                                i_file_structure TYPE string.
   PRIVATE SECTION.
     METHODS: upload_file,
-             move_data_to_tab_with_sep_flds IMPORTING i_separator_type TYPE string,
+             move_data_to_tab_with_sep_flds IMPORTING i_separator_type TYPE string
+                                                      i_file_structure TYPE string,
              move_data_to_tab_like_target,
              move_data_to_database_table.
-    TYPES: BEGIN OF t_temp,
+    TYPES: BEGIN OF t_initial_tab,
       string TYPE string,
-    END OF t_temp.
-    TYPES: BEGIN OF t_temp2,
+    END OF t_initial_tab.
+    TYPES: BEGIN OF t_initial_kna1_tab,
       kunnr TYPE kna1-kunnr,
       name1 TYPE kna1-name1,
       land1 TYPE kna1-land1,
       regio TYPE kna1-regio,
       ort01 TYPE kna1-ort01,
       stras TYPE kna1-stras,
-    END OF t_temp2.
-    DATA: lt_temp1  TYPE TABLE OF t_temp,
-          lwa_temp1 TYPE t_temp,
-          lt_temp2  TYPE TABLE OF t_temp2,
-          lwa_temp2 TYPE t_temp2,
-          lt_temp3  TYPE TABLE OF kna1,
-          lwa_temp3 TYPE kna1.
+    END OF t_initial_kna1_tab.
+    DATA: lt_initial_tab       TYPE TABLE OF t_initial_tab,
+          lwa_initial_tab      TYPE t_initial_tab,
+          lt_initial_kna1_tab  TYPE TABLE OF t_initial_kna1_tab,
+          lwa_initial_kna1_tab TYPE t_initial_kna1_tab,
+          lt_final_kna1_tab    TYPE TABLE OF kna1,
+          lwa_final_kna1_tab   TYPE kna1.
 ENDCLASS.                    "lcl_direct_input_technique_ini DEFINITION
 
 *CLASS lcl_call_trans_technique_ini DEFINITION.
