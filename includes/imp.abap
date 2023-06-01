@@ -263,21 +263,12 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
       WHEN 'KNA1'.
         populate_initial_kna1_tab( i_separator_type = i_separator_type ).
       WHEN 'VBRK'.
-        LOOP AT lt_initial INTO lwa_initial.
-          CLEAR lwa_initial_vbrk.
-          SPLIT lwa_initial-string AT i_separator_type INTO lwa_initial_vbrk-vbeln
-                                                             lwa_initial_vbrk-fktyp
-                                                             lwa_initial_vbrk-waerk
-                                                             lwa_initial_vbrk-belnr
-                                                             lwa_initial_vbrk-fkdat
-                                                             lwa_initial_vbrk-zlsch.
-          APPEND lwa_initial_vbrk TO lt_initial_vbrk.
-        ENDLOOP.
+        populate_initial_vbrk_tab( i_separator_type = i_separator_type ).
       WHEN 'VBRP'.
         populate_initial_vbrp_tab( i_separator_type = i_separator_type ).
     ENDCASE.
   ENDMETHOD.                    "move_data_to_tab_with_sep_flds
-  
+
   METHOD populate_initial_kna1_tab.
     LOOP AT lt_initial INTO lwa_initial.
       CLEAR lwa_initial_kna1.
@@ -289,6 +280,19 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
       APPEND lwa_initial_kna1 TO lt_initial_kna1.
     ENDLOOP.
   ENDMETHOD.                    "populate_initial_kna1_tab
+
+  METHOD populate_initial_vbrk_tab.
+    LOOP AT lt_initial INTO lwa_initial.
+      CLEAR lwa_initial_vbrk.
+      SPLIT lwa_initial-string AT i_separator_type INTO lwa_initial_vbrk-vbeln
+                                                        lwa_initial_vbrk-fktyp
+                                                        lwa_initial_vbrk-waerk
+                                                        lwa_initial_vbrk-belnr
+                                                        lwa_initial_vbrk-fkdat
+                                                        lwa_initial_vbrk-zlsch.
+      APPEND lwa_initial_vbrk TO lt_initial_vbrk.
+    ENDLOOP.
+  ENDMETHOD.                    "populate_initial_vbrk_tab
 
   METHOD populate_initial_vbrp_tab. "VBRP requires an additional level of abstracion due to the presence of the NETWR field. It's data
     TYPES: BEGIN OF t_temp,         "type - CURR makes it impossible to move a substring into the field immediately after splitting the
