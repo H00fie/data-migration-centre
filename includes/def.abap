@@ -15,11 +15,15 @@ CLASS lcl_direct_input_technique_ini DEFINITION.
     METHODS: upload_file,
              move_data_to_tab_with_sep_flds IMPORTING i_separator_type TYPE string
                                                       i_file_structure TYPE string,
-             move_data_to_tab_like_target,
-             move_data_to_database_table.
+             move_data_to_tab_like_target IMPORTING i_file_structure TYPE string,
+             move_data_to_database_table IMPORTING i_file_structure TYPE string.
+
     TYPES: BEGIN OF t_initial_tab,
       string TYPE string,
     END OF t_initial_tab.
+    DATA: lt_initial_tab       TYPE TABLE OF t_initial_tab,
+          lwa_initial_tab      TYPE t_initial_tab.
+
     TYPES: BEGIN OF t_initial_kna1_tab,
       kunnr TYPE kna1-kunnr,
       name1 TYPE kna1-name1,
@@ -28,12 +32,23 @@ CLASS lcl_direct_input_technique_ini DEFINITION.
       ort01 TYPE kna1-ort01,
       stras TYPE kna1-stras,
     END OF t_initial_kna1_tab.
-    DATA: lt_initial_tab       TYPE TABLE OF t_initial_tab,
-          lwa_initial_tab      TYPE t_initial_tab,
-          lt_initial_kna1_tab  TYPE TABLE OF t_initial_kna1_tab,
+    DATA: lt_initial_kna1_tab  TYPE TABLE OF t_initial_kna1_tab,
           lwa_initial_kna1_tab TYPE t_initial_kna1_tab,
           lt_final_kna1_tab    TYPE TABLE OF kna1,
           lwa_final_kna1_tab   TYPE kna1.
+
+    TYPES: BEGIN OF t_initial_vbrk,
+      vbeln TYPE vbrk-vbeln,
+      fktyp TYPE vbrk-fktyp,
+      waerk TYPE vbrk-waerk,
+      belnr TYPE vbrk-belnr,
+      fkdat TYPE vbrk-fkdat,
+      zlsch TYPE vbrk-zlsch,
+    END OF t_initial_vbrk.
+    DATA: lt_initial_vbrk  TYPE TABLE OF t_initial_vbrk,
+          lwa_initial_vbrk TYPE t_initial_vbrk,
+          lt_final_vbrk    TYPE TABLE OF vbrk,
+          lwa_final_vbrk   TYPE vbrk.
 ENDCLASS.                    "lcl_direct_input_technique_ini DEFINITION
 
 *CLASS lcl_call_trans_technique_ini DEFINITION.

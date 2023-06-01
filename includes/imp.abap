@@ -205,7 +205,7 @@ CLASS lcl_action_handler IMPLEMENTATION.
       WHEN 'FC6'.
         set_file_structure( i_file_structure = 'KNA1' ).
       WHEN 'FC7'.
-        set_file_structure( i_file_structure = 'VBAK' ).
+        set_file_structure( i_file_structure = 'VBRK' ).
       WHEN 'FC8'.
         set_file_structure( i_file_structure = 'VBAP' ).
       WHEN 'FC9'.
@@ -278,7 +278,8 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
     upload_file( ).
     move_data_to_tab_with_sep_flds( i_separator_type = i_separator_type
                                     i_file_structure = i_file_structure ).
-    move_data_to_tab_like_target( ).
+    move_data_to_tab_like_target( i_file_structure = i_file_structure ).
+    move_data_to_database_table( i_file_structure = i_file_structure ).
   ENDMETHOD.                    "initialize_the_migration
 
   METHOD upload_file.
@@ -294,35 +295,70 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
       WHEN 'KNA1'.
         LOOP AT lt_initial_tab INTO lwa_initial_tab.
           CLEAR lwa_initial_kna1_tab.
-          SPLIT lwa_initial_tab-string AT i_separator_type INTO lwa_initial_kna1_tab-kunnr "Later on I can feed this method the separator variable from the action handler instead of hardcoding a comma.
-                                                                     lwa_initial_kna1_tab-land1
-                                                                     lwa_initial_kna1_tab-regio
-                                                                     lwa_initial_kna1_tab-ort01
-                                                                     lwa_initial_kna1_tab-stras.
+          SPLIT lwa_initial_tab-string AT i_separator_type INTO lwa_initial_kna1_tab-kunnr
+                                                                lwa_initial_kna1_tab-land1
+                                                                lwa_initial_kna1_tab-regio
+                                                                lwa_initial_kna1_tab-ort01
+                                                                lwa_initial_kna1_tab-stras.
          APPEND lwa_initial_kna1_tab TO lt_initial_kna1_tab.
+       ENDLOOP.
+     WHEN 'VBRK'.
+       LOOP AT lt_initial_vbrk INTO lwa_initial_vbrk.
+          CLEAR lwa_initial_vbrk.
+          SPLIT lwa_initial_tab-string AT i_separator_type INTO lwa_initial_vbrk-vbeln
+                                                                lwa_initial_vbrk-fktyp
+                                                                lwa_initial_vbrk-waerk
+                                                                lwa_initial_vbrk-belnr
+                                                                lwa_initial_vbrk-fkdat
+                                                                lwa_initial_vbrk-zlsch.
+         APPEND lwa_initial_vbrk TO lt_initial_vbrk.
        ENDLOOP.
     ENDCASE.
   ENDMETHOD.                    "move_data_to_tab_with_sep_flds
 
   METHOD move_data_to_tab_like_target.
-    LOOP AT lt_initial_kna1_tab INTO lwa_initial_kna1_tab.
-      CLEAR lwa_final_kna1_tab.
-      lwa_final_kna1_tab-kunnr = lwa_initial_kna1_tab-kunnr.
-      lwa_final_kna1_tab-land1 = lwa_initial_kna1_tab-land1.
-      lwa_final_kna1_tab-regio = lwa_initial_kna1_tab-regio.
-      lwa_final_kna1_tab-ort01 = lwa_initial_kna1_tab-ort01.
-      lwa_final_kna1_tab-stras = lwa_initial_kna1_tab-stras.
-      APPEND lwa_final_kna1_tab TO lt_final_kna1_tab.
-    ENDLOOP.
+    CASE i_file_structure.
+      WHEN 'KNA1'.
+        LOOP AT lt_initial_kna1_tab INTO lwa_initial_kna1_tab.
+          CLEAR lwa_final_kna1_tab.
+          lwa_final_kna1_tab-kunnr = lwa_initial_kna1_tab-kunnr.
+          lwa_final_kna1_tab-land1 = lwa_initial_kna1_tab-land1.
+          lwa_final_kna1_tab-regio = lwa_initial_kna1_tab-regio.
+          lwa_final_kna1_tab-ort01 = lwa_initial_kna1_tab-ort01.
+          lwa_final_kna1_tab-stras = lwa_initial_kna1_tab-stras.
+          APPEND lwa_final_kna1_tab TO lt_final_kna1_tab.
+        ENDLOOP.
+      WHEN 'VBRK'.
+        LOOP AT lt_initial_vbrk INTO lwa_initial_vbrk.
+          CLEAR lwa_final_vbrk.
+          lwa_final_vbrk-vbeln = lwa_initial_vbrk-vbeln.
+          lwa_final_vbrk-fktyp = lwa_initial_vbrk-fktyp.
+          lwa_final_vbrk-waerk = lwa_initial_vbrk-waerk.
+          lwa_final_vbrk-belnr = lwa_initial_vbrk-belnr.
+          lwa_final_vbrk-fkdat = lwa_initial_vbrk-fkdat.
+          lwa_final_vbrk-zlsch = lwa_initial_vbrk-zlsch.
+          APPEND lwa_final_vbrk TO lt_final_vbrk.
+        ENDLOOP.
+    ENDCASE.
   ENDMETHOD.                    "move_data_to_tab_like_target
 
   METHOD move_data_to_database_table.
-    MODIFY kna1 FROM TABLE lt_final_kna1_tab.
-    IF sy-subrc = 0.
-      MESSAGE i000(zbmierzwi_test_msg2).
-    ELSE.
-      MESSAGE i001(zbmierzwi_test_msg2).
-    ENDIF.
+    CASE i_file_structure.
+      WHEN 'KNA1'.
+        MODIFY kna1 FROM TABLE lt_final_kna1_tab.
+        IF sy-subrc = 0.
+          MESSAGE i000(zbmierzwi_test_msg2).
+        ELSE.
+          MESSAGE i001(zbmierzwi_test_msg2).
+        ENDIF.
+      WHEN 'VBRK'.
+        MODIFY vbrk FROM TABLE lt_final_vbrk.
+        IF sy-subrc = 0.
+          MESSAGE i002(zbmierzwi_test_msg2).
+        ELSE.
+          MESSAGE i003(zbmierzwi_test_msg2).
+        ENDIF.
+    ENDCASE.
   ENDMETHOD.                    "move_data_to_database_table
 ENDCLASS.                    "lcl_direct_input_technique_ini IMPLEMENTATION
 
@@ -348,4 +384,6 @@ ENDCLASS.                    "lcl_f4_help_provider IMPLEMENTATION
 *Short description - Messages for Data Migration Centre.
 *---------------Messages---------------
 *000 - The data has been moved to the KNA1 database table.
-*001 - The moving of the data to the database table has failed.
+*001 - The moving of the data to the KNA1 database table has failed.
+*002 - The data has been moved to the VBRK database table.
+*003 - The moving of the data to the VBRK database table has failed.
