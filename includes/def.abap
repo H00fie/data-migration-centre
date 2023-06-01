@@ -18,24 +18,24 @@ CLASS lcl_direct_input_technique_ini DEFINITION.
              move_data_to_tab_like_target IMPORTING i_file_structure TYPE string,
              move_data_to_database_table IMPORTING i_file_structure TYPE string.
 
-    TYPES: BEGIN OF t_initial_tab,
+    TYPES: BEGIN OF t_initial,
       string TYPE string,
-    END OF t_initial_tab.
-    DATA: lt_initial_tab       TYPE TABLE OF t_initial_tab,
-          lwa_initial_tab      TYPE t_initial_tab.
+    END OF t_initial.
+    DATA: lt_initial  TYPE TABLE OF t_initial,
+          lwa_initial TYPE t_initial.
 
-    TYPES: BEGIN OF t_initial_kna1_tab,
+    TYPES: BEGIN OF t_initial_kna1,
       kunnr TYPE kna1-kunnr,
       name1 TYPE kna1-name1,
       land1 TYPE kna1-land1,
       regio TYPE kna1-regio,
       ort01 TYPE kna1-ort01,
       stras TYPE kna1-stras,
-    END OF t_initial_kna1_tab.
-    DATA: lt_initial_kna1_tab  TYPE TABLE OF t_initial_kna1_tab,
-          lwa_initial_kna1_tab TYPE t_initial_kna1_tab,
-          lt_final_kna1_tab    TYPE TABLE OF kna1,
-          lwa_final_kna1_tab   TYPE kna1.
+    END OF t_initial_kna1.
+    DATA: lt_initial_kna1  TYPE TABLE OF t_initial_kna1,
+          lwa_initial_kna1 TYPE t_initial_kna1,
+          lt_final_kna1    TYPE TABLE OF kna1,
+          lwa_final_kna1   TYPE kna1.
 
     TYPES: BEGIN OF t_initial_vbrk,
       vbeln TYPE vbrk-vbeln,
@@ -50,11 +50,6 @@ CLASS lcl_direct_input_technique_ini DEFINITION.
           lt_final_vbrk    TYPE TABLE OF vbrk,
           lwa_final_vbrk   TYPE vbrk.
 ENDCLASS.                    "lcl_direct_input_technique_ini DEFINITION
-
-*CLASS lcl_call_trans_technique_ini DEFINITION.
-*  PUBLIC SECTION.
-*    METHODS: initialize_the_migration.
-*ENDCLASS.                    "lcl_call_trans_technique_ini DEFINITION
 
 *----------------------------------------------------------------------*
 *       CLASS lcl_element_remover DEFINITION

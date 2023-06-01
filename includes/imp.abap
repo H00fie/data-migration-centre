@@ -287,30 +287,30 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
       EXPORTING
         filename                      = p_f_path
       TABLES
-        data_tab                      = lt_initial_tab.
+        data_tab                      = lt_initial.
   ENDMETHOD.                    "upload_file
 
   METHOD move_data_to_tab_with_sep_flds.
     CASE i_file_structure.
       WHEN 'KNA1'.
-        LOOP AT lt_initial_tab INTO lwa_initial_tab.
-          CLEAR lwa_initial_kna1_tab.
-          SPLIT lwa_initial_tab-string AT i_separator_type INTO lwa_initial_kna1_tab-kunnr
-                                                                lwa_initial_kna1_tab-land1
-                                                                lwa_initial_kna1_tab-regio
-                                                                lwa_initial_kna1_tab-ort01
-                                                                lwa_initial_kna1_tab-stras.
-         APPEND lwa_initial_kna1_tab TO lt_initial_kna1_tab.
+        LOOP AT lt_initial INTO lwa_initial.
+          CLEAR lwa_initial_kna1.
+          SPLIT lwa_initial-string AT i_separator_type INTO lwa_initial_kna1-kunnr
+                                                            lwa_initial_kna1-land1
+                                                            lwa_initial_kna1-regio
+                                                            lwa_initial_kna1-ort01
+                                                            lwa_initial_kna1-stras.
+         APPEND lwa_initial_kna1 TO lt_initial_kna1.
        ENDLOOP.
      WHEN 'VBRK'.
        LOOP AT lt_initial_vbrk INTO lwa_initial_vbrk.
           CLEAR lwa_initial_vbrk.
-          SPLIT lwa_initial_tab-string AT i_separator_type INTO lwa_initial_vbrk-vbeln
-                                                                lwa_initial_vbrk-fktyp
-                                                                lwa_initial_vbrk-waerk
-                                                                lwa_initial_vbrk-belnr
-                                                                lwa_initial_vbrk-fkdat
-                                                                lwa_initial_vbrk-zlsch.
+          SPLIT lwa_initial-string AT i_separator_type INTO lwa_initial_vbrk-vbeln
+                                                            lwa_initial_vbrk-fktyp
+                                                            lwa_initial_vbrk-waerk
+                                                            lwa_initial_vbrk-belnr
+                                                            lwa_initial_vbrk-fkdat
+                                                            lwa_initial_vbrk-zlsch.
          APPEND lwa_initial_vbrk TO lt_initial_vbrk.
        ENDLOOP.
     ENDCASE.
@@ -319,14 +319,14 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
   METHOD move_data_to_tab_like_target.
     CASE i_file_structure.
       WHEN 'KNA1'.
-        LOOP AT lt_initial_kna1_tab INTO lwa_initial_kna1_tab.
-          CLEAR lwa_final_kna1_tab.
-          lwa_final_kna1_tab-kunnr = lwa_initial_kna1_tab-kunnr.
-          lwa_final_kna1_tab-land1 = lwa_initial_kna1_tab-land1.
-          lwa_final_kna1_tab-regio = lwa_initial_kna1_tab-regio.
-          lwa_final_kna1_tab-ort01 = lwa_initial_kna1_tab-ort01.
-          lwa_final_kna1_tab-stras = lwa_initial_kna1_tab-stras.
-          APPEND lwa_final_kna1_tab TO lt_final_kna1_tab.
+        LOOP AT lt_initial_kna1 INTO lwa_initial_kna1.
+          CLEAR lwa_final_kna1.
+          lwa_final_kna1-kunnr = lwa_initial_kna1-kunnr.
+          lwa_final_kna1-land1 = lwa_initial_kna1-land1.
+          lwa_final_kna1-regio = lwa_initial_kna1-regio.
+          lwa_final_kna1-ort01 = lwa_initial_kna1-ort01.
+          lwa_final_kna1-stras = lwa_initial_kna1-stras.
+          APPEND lwa_final_kna1 TO lt_final_kna1.
         ENDLOOP.
       WHEN 'VBRK'.
         LOOP AT lt_initial_vbrk INTO lwa_initial_vbrk.
@@ -345,7 +345,7 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
   METHOD move_data_to_database_table.
     CASE i_file_structure.
       WHEN 'KNA1'.
-        MODIFY kna1 FROM TABLE lt_final_kna1_tab.
+        MODIFY kna1 FROM TABLE lt_final_kna1.
         IF sy-subrc = 0.
           MESSAGE i000(zbmierzwi_test_msg2).
         ELSE.
