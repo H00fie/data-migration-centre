@@ -175,7 +175,7 @@ CLASS lcl_action_handler IMPLEMENTATION.
       WHEN 'FC7'.
         set_file_structure( i_file_structure = 'VBRK' ).
       WHEN 'FC8'.
-        set_file_structure( i_file_structure = 'VBAP' ).
+        set_file_structure( i_file_structure = 'VBRP' ).
       WHEN 'FC9'.
         set_file_location( i_file_location = 'Locally' ).
       WHEN 'FC10'.
