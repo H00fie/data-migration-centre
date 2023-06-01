@@ -261,15 +261,7 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
   METHOD move_data_to_tab_with_sep_flds.
     CASE i_file_structure.
       WHEN 'KNA1'.
-        LOOP AT lt_initial INTO lwa_initial.
-          CLEAR lwa_initial_kna1.
-          SPLIT lwa_initial-string AT i_separator_type INTO lwa_initial_kna1-kunnr
-                                                            lwa_initial_kna1-land1
-                                                            lwa_initial_kna1-regio
-                                                            lwa_initial_kna1-ort01
-                                                            lwa_initial_kna1-stras.
-          APPEND lwa_initial_kna1 TO lt_initial_kna1.
-        ENDLOOP.
+        populate_initial_kna1_tab( i_separator_type = i_separator_type ).
       WHEN 'VBRK'.
         LOOP AT lt_initial INTO lwa_initial.
           CLEAR lwa_initial_vbrk.
@@ -283,17 +275,20 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
         ENDLOOP.
       WHEN 'VBRP'.
         populate_initial_vbrp_tab( i_separator_type = i_separator_type ).
-*        LOOP AT lt_initial INTO lwa_initial.
-*          CLEAR lwa_initial_vbrp.
-*          SPLIT lwa_initial-string AT i_separator_type INTO lwa_initial_vbrp-vbeln
-*                                                            lwa_initial_vbrp-posnr
-*                                                            lwa_initial_vbrp-meins
-*                                                            lwa_initial_vbrp-matnr
-*                                                            lwa_initial_vbrp-netwr.
-*          APPEND lwa_initial_vbrp TO lt_initial_vbrp.
-*        ENDLOOP.
     ENDCASE.
   ENDMETHOD.                    "move_data_to_tab_with_sep_flds
+  
+  METHOD populate_initial_kna1_tab.
+    LOOP AT lt_initial INTO lwa_initial.
+      CLEAR lwa_initial_kna1.
+      SPLIT lwa_initial-string AT i_separator_type INTO lwa_initial_kna1-kunnr
+                                                        lwa_initial_kna1-land1
+                                                        lwa_initial_kna1-regio
+                                                        lwa_initial_kna1-ort01
+                                                        lwa_initial_kna1-stras.
+      APPEND lwa_initial_kna1 TO lt_initial_kna1.
+    ENDLOOP.
+  ENDMETHOD.                    "populate_initial_kna1_tab
 
   METHOD populate_initial_vbrp_tab. "VBRP requires an additional level of abstracion due to the presence of the NETWR field. It's data
     TYPES: BEGIN OF t_temp,         "type - CURR makes it impossible to move a substring into the field immediately after splitting the

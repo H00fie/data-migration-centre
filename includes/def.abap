@@ -17,6 +17,7 @@ CLASS lcl_direct_input_technique_ini DEFINITION.
                                                       i_file_structure TYPE string,
              move_data_to_tab_like_target   IMPORTING i_file_structure TYPE string,
              move_data_to_database_table    IMPORTING i_file_structure TYPE string,
+			 populate_initial_kna1_tab      IMPORTING i_file_structure TYPE string,
              populate_initial_vbrp_tab      IMPORTING i_file_structure TYPE string.
 
     TYPES: BEGIN OF t_initial,
