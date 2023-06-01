@@ -15,8 +15,9 @@ CLASS lcl_direct_input_technique_ini DEFINITION.
     METHODS: upload_file,
              move_data_to_tab_with_sep_flds IMPORTING i_separator_type TYPE string
                                                       i_file_structure TYPE string,
-             move_data_to_tab_like_target IMPORTING i_file_structure TYPE string,
-             move_data_to_database_table IMPORTING i_file_structure TYPE string.
+             move_data_to_tab_like_target   IMPORTING i_file_structure TYPE string,
+             move_data_to_database_table    IMPORTING i_file_structure TYPE string,
+             populate_initial_vbrp_tab      IMPORTING i_file_structure TYPE string.
 
     TYPES: BEGIN OF t_initial,
       string TYPE string,
@@ -49,7 +50,25 @@ CLASS lcl_direct_input_technique_ini DEFINITION.
           lwa_initial_vbrk TYPE t_initial_vbrk,
           lt_final_vbrk    TYPE TABLE OF vbrk,
           lwa_final_vbrk   TYPE vbrk.
+
+    TYPES: BEGIN OF t_initial_vbrp,
+      vbeln TYPE vbrp-vbeln,
+      posnr TYPE vbrp-posnr,
+      meins TYPE vbrp-meins,
+      matnr TYPE vbrp-matnr,
+      netwr TYPE vbrp-netwr,
+    END OF t_initial_vbrp.
+    DATA: lt_initial_vbrp  TYPE TABLE OF t_initial_vbrp,
+          lwa_initial_vbrp TYPE t_initial_vbrp,
+          lt_final_vbrp    TYPE TABLE OF vbrp,
+          lwa_final_vbrp   TYPE vbrp.
+
 ENDCLASS.                    "lcl_direct_input_technique_ini DEFINITION
+
+*CLASS lcl_call_trans_technique_ini DEFINITION.
+*  PUBLIC SECTION.
+*    METHODS: initialize_the_migration.
+*ENDCLASS.                    "lcl_call_trans_technique_ini DEFINITION
 
 *----------------------------------------------------------------------*
 *       CLASS lcl_element_remover DEFINITION

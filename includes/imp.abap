@@ -300,21 +300,59 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
                                                             lwa_initial_kna1-regio
                                                             lwa_initial_kna1-ort01
                                                             lwa_initial_kna1-stras.
-         APPEND lwa_initial_kna1 TO lt_initial_kna1.
-       ENDLOOP.
-     WHEN 'VBRK'.
-       LOOP AT lt_initial_vbrk INTO lwa_initial_vbrk.
+          APPEND lwa_initial_kna1 TO lt_initial_kna1.
+        ENDLOOP.
+      WHEN 'VBRK'.
+        LOOP AT lt_initial INTO lwa_initial.
           CLEAR lwa_initial_vbrk.
           SPLIT lwa_initial-string AT i_separator_type INTO lwa_initial_vbrk-vbeln
-                                                            lwa_initial_vbrk-fktyp
-                                                            lwa_initial_vbrk-waerk
-                                                            lwa_initial_vbrk-belnr
-                                                            lwa_initial_vbrk-fkdat
-                                                            lwa_initial_vbrk-zlsch.
-         APPEND lwa_initial_vbrk TO lt_initial_vbrk.
-       ENDLOOP.
+                                                             lwa_initial_vbrk-fktyp
+                                                             lwa_initial_vbrk-waerk
+                                                             lwa_initial_vbrk-belnr
+                                                             lwa_initial_vbrk-fkdat
+                                                             lwa_initial_vbrk-zlsch.
+          APPEND lwa_initial_vbrk TO lt_initial_vbrk.
+        ENDLOOP.
+      WHEN 'VBRP'.
+        populate_initial_vbrp_tab( i_separator_type = i_separator_type ).
+*        LOOP AT lt_initial INTO lwa_initial.
+*          CLEAR lwa_initial_vbrp.
+*          SPLIT lwa_initial-string AT i_separator_type INTO lwa_initial_vbrp-vbeln
+*                                                            lwa_initial_vbrp-posnr
+*                                                            lwa_initial_vbrp-meins
+*                                                            lwa_initial_vbrp-matnr
+*                                                            lwa_initial_vbrp-netwr.
+*          APPEND lwa_initial_vbrp TO lt_initial_vbrp.
+*        ENDLOOP.
     ENDCASE.
   ENDMETHOD.                    "move_data_to_tab_with_sep_flds
+
+  METHOD populate_initial_vbrp_tab. "VBRP requires an additional level of abstracion due to the presence of the NETWR field. It's data
+    TYPES: BEGIN OF t_temp,         "type - CURR makes it impossible to move a substring into the field immediately after splitting the
+      string1 TYPE string,          "initial string containing all the data. I need to first save the substring into a string field and
+      string2 TYPE string,          "then '=' is enough to perform the conversion to CURR.
+      string3 TYPE string,
+      string4 TYPE string,
+      string5 TYPE string,
+    END OF t_temp.
+    DATA: lt_temp  TYPE TABLE OF t_temp,
+          lwa_temp TYPE t_temp.
+
+    LOOP AT lt_initial INTO lwa_initial.
+      CLEAR lwa_temp.
+      SPLIT lwa_initial-string AT i_separator_type INTO lwa_temp-string1
+                                                        lwa_temp-string2
+                                                        lwa_temp-string3
+                                                        lwa_temp-string4
+                                                        lwa_temp-string5.
+      lwa_initial_vbrp-vbeln = lwa_temp-string1.
+      lwa_initial_vbrp-posnr = lwa_temp-string2.
+      lwa_initial_vbrp-meins = lwa_temp-string3.
+      lwa_initial_vbrp-matnr = lwa_temp-string4.
+      lwa_initial_vbrp-netwr = lwa_temp-string5.
+      APPEND lwa_initial_vbrp TO lt_initial_vbrp.
+    ENDLOOP.
+  ENDMETHOD.                    "convert_string_to_netwr
 
   METHOD move_data_to_tab_like_target.
     CASE i_file_structure.
@@ -339,6 +377,16 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
           lwa_final_vbrk-zlsch = lwa_initial_vbrk-zlsch.
           APPEND lwa_final_vbrk TO lt_final_vbrk.
         ENDLOOP.
+      WHEN 'VBRP'.
+        LOOP AT lt_initial_vbrp INTO lwa_initial_vbrp.
+          CLEAR lwa_final_vbrp.
+          lwa_final_vbrp-vbeln = lwa_initial_vbrp-vbeln.
+          lwa_final_vbrp-posnr = lwa_initial_vbrp-posnr.
+          lwa_final_vbrp-meins = lwa_initial_vbrp-meins.
+          lwa_final_vbrp-matnr = lwa_initial_vbrp-matnr.
+          lwa_final_vbrp-netwr = lwa_initial_vbrp-netwr.
+          APPEND lwa_final_vbrp TO lt_final_vbrp.
+        ENDLOOP.
     ENDCASE.
   ENDMETHOD.                    "move_data_to_tab_like_target
 
@@ -357,6 +405,13 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
           MESSAGE i002(zbmierzwi_test_msg2).
         ELSE.
           MESSAGE i003(zbmierzwi_test_msg2).
+        ENDIF.
+      WHEN 'VBRP'.
+        MODIFY vbrp FROM TABLE lt_final_vbrp.
+        IF sy-subrc = 0.
+          MESSAGE i003(zbmierzwi_test_msg2).
+        ELSE.
+          MESSAGE i004(zbmierzwi_test_msg2).
         ENDIF.
     ENDCASE.
   ENDMETHOD.                    "move_data_to_database_table
@@ -387,3 +442,5 @@ ENDCLASS.                    "lcl_f4_help_provider IMPLEMENTATION
 *001 - The moving of the data to the KNA1 database table has failed.
 *002 - The data has been moved to the VBRK database table.
 *003 - The moving of the data to the VBRK database table has failed.
+*004 - The data has been moved to the VBRP database table.
+*005 - The moving of the data to the VBRP database table has failed.
