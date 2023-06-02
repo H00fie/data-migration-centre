@@ -180,6 +180,10 @@ CLASS lcl_action_handler IMPLEMENTATION.
         set_file_location( i_file_location = 'Locally' ).
       WHEN 'FC10'.
         set_file_location( i_file_location = 'Application server' ).
+      WHEN 'FC11'.
+        set_migration_technique( i_migration_technique = 'Direct Input Method' ).
+      WHEN 'FC12'.
+        set_migration_technique( i_migration_technique = 'Call Transaction Technique' ).
       WHEN 'FC13'.
         lo_direct_input_technique_ini->initialize_the_migration( i_separator_type = lv_separator_type
                                                                  i_file_structure = lv_file_structure ).
@@ -201,6 +205,10 @@ CLASS lcl_action_handler IMPLEMENTATION.
   METHOD set_file_location.
     lv_file_location = i_file_location.
   ENDMETHOD.                    "set_file_location
+
+  METHOD set_migration_technique.
+    lv_migration_technique = i_migration_technique.
+  ENDMETHOD.                    "set_migration_technique
 ENDCLASS.                    "lcl_action_handler IMPLEMENTATION
 
 *----------------------------------------------------------------------*
@@ -390,7 +398,7 @@ ENDCLASS.                    "lcl_direct_input_technique_ini IMPLEMENTATION
 *
 *----------------------------------------------------------------------*
 CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
-  METHOD initialize_migration.
+  METHOD initialize_the_migration.
   ENDMETHOD.                    "initialize_migration
 ENDCLASS.                    "lcl_call_trans_technique_ini
 

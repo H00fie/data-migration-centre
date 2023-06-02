@@ -67,10 +67,12 @@ CLASS lcl_direct_input_technique_ini DEFINITION.
 
 ENDCLASS.                    "lcl_direct_input_technique_ini DEFINITION
 
-*CLASS lcl_call_trans_technique_ini DEFINITION.
-*  PUBLIC SECTION.
-*    METHODS: initialize_the_migration.
-*ENDCLASS.                    "lcl_call_trans_technique_ini DEFINITION
+CLASS lcl_call_trans_technique_ini DEFINITION.
+  PUBLIC SECTION.
+    METHODS: initialize_the_migration IMPORTING i_separator_type TYPE string
+                                                i_file_structure TYPE string.
+  PRIVATE SECTION.
+ENDCLASS.                    "lcl_call_trans_technique_ini DEFINITION
 
 *----------------------------------------------------------------------*
 *       CLASS lcl_element_remover DEFINITION
@@ -106,12 +108,14 @@ CLASS lcl_action_handler DEFINITION.
     METHODS: set_file_type      IMPORTING i_file_type      TYPE string,
              set_separator_type IMPORTING i_separator_type TYPE string,
              set_file_structure IMPORTING i_file_structure TYPE string,
-             set_file_location  IMPORTING i_file_location  TYPE string.
+             set_file_location  IMPORTING i_file_location  TYPE string,
+             set_migration_technique IMPORTING i_migration_technique TYPE string.
     DATA: lo_direct_input_technique_ini TYPE REF TO lcl_direct_input_technique_ini,
           lv_file_type                  TYPE string,
           lv_separator_type             TYPE string,
           lv_file_structure             TYPE string,
-          lv_file_location              TYPE string.
+          lv_file_location              TYPE string,
+          lv_migration_technique        TYPE string.
 ENDCLASS.                    "lcl_action_handler DEFINITION
 
 *----------------------------------------------------------------------*
