@@ -185,8 +185,12 @@ CLASS lcl_action_handler IMPLEMENTATION.
       WHEN 'FC12'.
         set_migration_technique( i_migration_technique = 'Call Transaction Technique' ).
       WHEN 'FC13'.
-        lo_direct_input_technique_ini->initialize_the_migration( i_separator_type = lv_separator_type
-                                                                 i_file_structure = lv_file_structure ).
+        CASE lv_migration_technique.
+        	WHEN 'Direct Input Method'.
+            lo_direct_input_technique_ini->initialize_the_migration( i_separator_type = lv_separator_type
+                                                                     i_file_structure = lv_file_structure ).
+          WHEN 'Call Transaction Technique'.
+        ENDCASE.
     ENDCASE.
   ENDMETHOD.                    "decide_action
 
