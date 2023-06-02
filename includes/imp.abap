@@ -362,27 +362,37 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
       WHEN 'KNA1'.
         MODIFY kna1 FROM TABLE lt_final_kna1.
         IF sy-subrc = 0.
-          MESSAGE i000(zbmierzwi_test_msg2).
+          MESSAGE i000(data_mig_centre).
         ELSE.
-          MESSAGE i001(zbmierzwi_test_msg2).
+          MESSAGE i001(data_mig_centre).
         ENDIF.
       WHEN 'VBRK'.
         MODIFY vbrk FROM TABLE lt_final_vbrk.
         IF sy-subrc = 0.
-          MESSAGE i002(zbmierzwi_test_msg2).
+          MESSAGE i002(data_mig_centre).
         ELSE.
-          MESSAGE i003(zbmierzwi_test_msg2).
+          MESSAGE i003(data_mig_centre).
         ENDIF.
       WHEN 'VBRP'.
         MODIFY vbrp FROM TABLE lt_final_vbrp.
         IF sy-subrc = 0.
-          MESSAGE i003(zbmierzwi_test_msg2).
+          MESSAGE i003(data_mig_centre).
         ELSE.
-          MESSAGE i004(zbmierzwi_test_msg2).
+          MESSAGE i004(data_mig_centre).
         ENDIF.
     ENDCASE.
   ENDMETHOD.                    "move_data_to_database_table
 ENDCLASS.                    "lcl_direct_input_technique_ini IMPLEMENTATION
+
+*----------------------------------------------------------------------*
+*       CLASS lcl_call_trans_technique_ini IMPLEMENTATION
+*----------------------------------------------------------------------*
+*
+*----------------------------------------------------------------------*
+CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
+  METHOD initialize_migration.
+  ENDMETHOD.                    "initialize_migration
+ENDCLASS.                    "lcl_call_trans_technique_ini
 
 *----------------------------------------------------------------------*
 *       CLASS lcl_f4_help_provider IMPLEMENTATION
@@ -401,7 +411,7 @@ CLASS lcl_f4_help_provider IMPLEMENTATION.
   ENDMETHOD.                    "provide_f4_help
 ENDCLASS.                    "lcl_f4_help_provider IMPLEMENTATION
 
-*MESSAGES TO BE INCLUDED IN THE MESSAGE CLASS.
+*MESSAGES TO BE INCLUDED IN THE MESSAGE CLASS.-------------------------------------------------------------------------------------------------
 *-----------Attributes Sheet-----------
 *Short description - Messages for Data Migration Centre.
 *---------------Messages---------------
@@ -411,3 +421,38 @@ ENDCLASS.                    "lcl_f4_help_provider IMPLEMENTATION
 *003 - The moving of the data to the VBRK database table has failed.
 *004 - The data has been moved to the VBRP database table.
 *005 - The moving of the data to the VBRP database table has failed.
+*006 - A record & been affected.
+
+*THE MODULE POOL PROGRAM FOR THE CALL TRANSACTION TECHNIQUE IN THE CASE OF KNA1.---------------------------------------------------------------
+*-----------Screen 100 Flow Logic-----------
+*PROCESS BEFORE OUTPUT.
+*
+*PROCESS AFTER INPUT.
+* MODULE USER_COMMAND_0100.
+* MODULE exit_forcefully AT EXIT-COMMAND.
+*---------------Messages---------------
+*PROGRAM mig_ctr_kna1.
+*
+*TABLES kna1.
+*
+*MODULE user_command_0100 INPUT.
+*  CASE sy-ucomm.
+*    WHEN 'FC1'.
+*      MODIFY kna1.
+*      IF sy-subrc = 0.
+*        MESSAGE i006(data_mig_centre) WITH 'has'.
+*      ELSE.
+*        MESSAGE i006(data_mig_centre) WITH 'has not'.
+*      ENDIF.
+*      LEAVE PROGRAM.
+*    WHEN 'FC2'.
+*      LEAVE PROGRAM.
+*  ENDCASE.
+*ENDMODULE.
+*
+*MODULE exit_forcefully INPUT.
+*  CASE sy-ucomm.
+*    WHEN 'FC3'.
+*      LEAVE PROGRAM.
+*  ENDCASE.
+*ENDMODULE.
