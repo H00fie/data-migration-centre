@@ -186,10 +186,12 @@ CLASS lcl_action_handler IMPLEMENTATION.
         set_migration_technique( i_migration_technique = 'Call Transaction Technique' ).
       WHEN 'FC13'.
         CASE lv_migration_technique.
-        	WHEN 'Direct Input Method'.
+          WHEN 'Direct Input Method'.
             lo_direct_input_technique_ini->initialize_the_migration( i_separator_type = lv_separator_type
                                                                      i_file_structure = lv_file_structure ).
           WHEN 'Call Transaction Technique'.
+            lo_call_trans_technique_ini->initialize_the_migration( i_separator_type = lv_separator_type
+                                                                     i_file_structure = lv_file_structure ).
         ENDCASE.
     ENDCASE.
   ENDMETHOD.                    "decide_action
@@ -331,7 +333,7 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
       lwa_initial_vbrp-netwr = lwa_temp-string5.
       APPEND lwa_initial_vbrp TO lt_initial_vbrp.
     ENDLOOP.
-  ENDMETHOD.                    "convert_string_to_netwr
+  ENDMETHOD.                    "populate_initial_vbrp_tab
 
   METHOD move_data_to_tab_like_target.
     CASE i_file_structure.
@@ -403,8 +405,11 @@ ENDCLASS.                    "lcl_direct_input_technique_ini IMPLEMENTATION
 *----------------------------------------------------------------------*
 CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
   METHOD initialize_the_migration.
+    upload_file( ).
+    move_data_to_tab_with_sep_flds( i_separator_type = i_separator_type
+                                    i_file_structure = i_file_structure ).
   ENDMETHOD.                    "initialize_migration
-  
+
   METHOD upload_file.
     CALL FUNCTION 'GUI_UPLOAD'
       EXPORTING
@@ -412,6 +417,73 @@ CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
       TABLES
         data_tab                      = lt_initial.
   ENDMETHOD.                    "upload_file
+
+  METHOD move_data_to_tab_with_sep_flds.
+    CASE i_file_structure.
+      WHEN 'KNA1'.
+        populate_initial_kna1_tab( i_separator_type = i_separator_type ).
+      WHEN 'VBRK'.
+        populate_initial_vbrk_tab( i_separator_type = i_separator_type ).
+      WHEN 'VBRP'.
+        populate_initial_vbrp_tab( i_separator_type = i_separator_type ).
+    ENDCASE.
+  ENDMETHOD.                    "move_data_to_tab_with_sep_flds
+
+  METHOD populate_initial_kna1_tab.
+    LOOP AT lt_initial INTO lwa_initial.
+      CLEAR lwa_initial_kna1.
+      SPLIT lwa_initial-string AT i_separator_type INTO lwa_initial_kna1-kunnr
+                                                        lwa_initial_kna1-land1
+                                                        lwa_initial_kna1-regio
+                                                        lwa_initial_kna1-ort01
+                                                        lwa_initial_kna1-stras.
+      APPEND lwa_initial_kna1 TO lt_initial_kna1.
+    ENDLOOP.
+  ENDMETHOD.                    "populate_initial_kna1_tab
+
+  METHOD populate_initial_vbrk_tab.
+    LOOP AT lt_initial INTO lwa_initial.
+      CLEAR lwa_initial_vbrk.
+      SPLIT lwa_initial-string AT i_separator_type INTO lwa_initial_vbrk-vbeln
+                                                        lwa_initial_vbrk-fktyp
+                                                        lwa_initial_vbrk-waerk
+                                                        lwa_initial_vbrk-belnr
+                                                        lwa_initial_vbrk-fkdat
+                                                        lwa_initial_vbrk-zlsch.
+      APPEND lwa_initial_vbrk TO lt_initial_vbrk.
+    ENDLOOP.
+  ENDMETHOD.                    "populate_initial_vbrk_tab
+
+  METHOD populate_initial_vbrp_tab. "VBRP requires an additional level of abstracion due to the presence of the NETWR field. It's data
+    TYPES: BEGIN OF t_temp,         "type - CURR makes it impossible to move a substring into the field immediately after splitting the
+      string1 TYPE string,          "initial string containing all the data. I need to first save the substring into a string field and
+      string2 TYPE string,          "then '=' is enough to perform the conversion to CURR.
+      string3 TYPE string,
+      string4 TYPE string,
+      string5 TYPE string,
+    END OF t_temp.
+    DATA: lt_temp  TYPE TABLE OF t_temp,
+          lwa_temp TYPE t_temp.
+
+    LOOP AT lt_initial INTO lwa_initial.
+      CLEAR lwa_temp.
+      SPLIT lwa_initial-string AT i_separator_type INTO lwa_temp-string1
+                                                        lwa_temp-string2
+                                                        lwa_temp-string3
+                                                        lwa_temp-string4
+                                                        lwa_temp-string5.
+      lwa_initial_vbrp-vbeln = lwa_temp-string1.
+      lwa_initial_vbrp-posnr = lwa_temp-string2.
+      lwa_initial_vbrp-meins = lwa_temp-string3.
+      lwa_initial_vbrp-matnr = lwa_temp-string4.
+      lwa_initial_vbrp-netwr = lwa_temp-string5.
+      APPEND lwa_initial_vbrp TO lt_initial_vbrp.
+    ENDLOOP.
+  ENDMETHOD.                    "populate_initial_vbrp_tab
+
+  METHOD populate_bdcdata_structure.
+
+  ENDMETHOD.                    "populate_bdcdata_structure
 ENDCLASS.                    "lcl_call_trans_technique_ini
 
 *----------------------------------------------------------------------*

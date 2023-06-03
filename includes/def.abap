@@ -72,10 +72,16 @@ CLASS lcl_call_trans_technique_ini DEFINITION.
     METHODS: initialize_the_migration IMPORTING i_separator_type TYPE string
                                                 i_file_structure TYPE string.
   PRIVATE SECTION.
-	METHODS: upload_file.
+    METHODS: upload_file,
+             move_data_to_tab_with_sep_flds IMPORTING i_separator_type TYPE string
+                                                      i_file_structure TYPE string,
+             populate_initial_kna1_tab      IMPORTING i_separator_type TYPE string,
+             populate_initial_vbrk_tab      IMPORTING i_separator_type TYPE string,
+             populate_initial_vbrp_tab      IMPORTING i_separator_type TYPE string,
+             populate_bdcdata_structure.
     DATA: lt_bdcdata  TYPE TABLE OF bdcdata,
           lwa_bdcdata TYPE bdcdata.
-    
+
     TYPES: BEGIN OF t_initial,
       string TYPE string,
     END OF t_initial.
@@ -149,7 +155,8 @@ ENDCLASS.                    "lcl_visibility_dispenser DEFINITION
 *----------------------------------------------------------------------*
 CLASS lcl_action_handler DEFINITION.
   PUBLIC SECTION.
-    METHODS: constructor IMPORTING io_direct_input_technique_ini TYPE REF TO lcl_direct_input_technique_ini,
+    METHODS: constructor IMPORTING io_direct_input_technique_ini TYPE REF TO lcl_direct_input_technique_ini
+                                   io_call_trans_technique_ini   TYPE REF TO lcl_call_trans_technique_ini,
              decide_action.
   PRIVATE SECTION.
     METHODS: set_file_type      IMPORTING i_file_type      TYPE string,
@@ -158,6 +165,7 @@ CLASS lcl_action_handler DEFINITION.
              set_file_location  IMPORTING i_file_location  TYPE string,
              set_migration_technique IMPORTING i_migration_technique TYPE string.
     DATA: lo_direct_input_technique_ini TYPE REF TO lcl_direct_input_technique_ini,
+          lo_call_trans_technique_ini   TYPE REF TO lcl_call_trans_technique_ini,
           lv_file_type                  TYPE string,
           lv_separator_type             TYPE string,
           lv_file_structure             TYPE string,
