@@ -404,6 +404,14 @@ ENDCLASS.                    "lcl_direct_input_technique_ini IMPLEMENTATION
 CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
   METHOD initialize_the_migration.
   ENDMETHOD.                    "initialize_migration
+  
+  METHOD upload_file.
+    CALL FUNCTION 'GUI_UPLOAD'
+      EXPORTING
+        filename                      = p_f_path
+      TABLES
+        data_tab                      = lt_initial.
+  ENDMETHOD.                    "upload_file
 ENDCLASS.                    "lcl_call_trans_technique_ini
 
 *----------------------------------------------------------------------*
