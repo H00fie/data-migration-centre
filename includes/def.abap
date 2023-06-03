@@ -72,7 +72,7 @@ CLASS lcl_call_trans_technique_ini DEFINITION.
     METHODS: initialize_the_migration IMPORTING i_separator_type TYPE string
                                                 i_file_structure TYPE string.
   PRIVATE SECTION.
-	METHODS: gui_upload.
+	METHODS: upload_file.
     DATA: lt_bdcdata  TYPE TABLE OF bdcdata,
           lwa_bdcdata TYPE bdcdata.
     
