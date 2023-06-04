@@ -493,6 +493,7 @@ CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
           map_field_data( i_field = 'REGIO' ).
           map_field_data( i_field = 'ORT01' ).
           map_field_data( i_field = 'STRAS' ).
+          CALL TRANSACTION 'ZBMI11' USING lt_bdcdata.
         ENDLOOP.
       WHEN 'VBRK'.
         LOOP AT lt_initial_vbrk INTO lwa_initial_vbrk.
@@ -503,6 +504,7 @@ CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
           map_field_data( i_field = 'BELNR' ).
           map_field_data( i_field = 'FKDAT' ).
           map_field_data( i_field = 'ZLSCH' ).
+          CALL TRANSACTION 'ZBMI11' USING lt_bdcdata.
         ENDLOOP.
       WHEN 'VBRP'.
         LOOP AT lt_initial_vbrp INTO lwa_initial_vbrp.
@@ -512,6 +514,7 @@ CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
           map_field_data( i_field = 'MEINS' ).
           map_field_data( i_field = 'MATNR' ).
           map_field_data( i_field = 'NETWR' ).
+          CALL TRANSACTION 'ZBMI11' USING lt_bdcdata.
         ENDLOOP.
     ENDCASE.
   ENDMETHOD.                    "populate_bdcdata_structure
