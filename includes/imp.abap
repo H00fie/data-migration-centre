@@ -495,6 +495,15 @@ CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
           map_field_data( i_field = 'STRAS' ).
         ENDLOOP.
       WHEN 'VBRK'.
+        LOOP AT lt_initial_vbrk INTO lwa_initial_vbrk.
+          map_program_data( ).
+          map_field_data( i_field = 'VBELN' ).
+          map_field_data( i_field = 'FKTYP' ).
+          map_field_data( i_field = 'WAERK' ).
+          map_field_data( i_field = 'BELNR' ).
+          map_field_data( i_field = 'FKDAT' ).
+          map_field_data( i_field = 'ZLSCH' ).
+        ENDLOOP.
       WHEN 'VBRP'.
     ENDCASE.
   ENDMETHOD.                    "populate_bdcdata_structure
@@ -529,6 +538,24 @@ CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
       WHEN 'STRAS'.
         lwa_bdcdata-fnam = 'KNA1-STRAS'.
         lwa_bdcdata-fval = lwa_initial_kna1-stras.
+      WHEN 'VBELN'.
+        lwa_bdcdata-fnam = 'VBRK-VBELN'.
+        lwa_bdcdata-fval = lwa_initial_vbrk-vbeln.
+      WHEN 'FKTYP'.
+        lwa_bdcdata-fnam = 'VBRK-FKTYP'.
+        lwa_bdcdata-fval = lwa_initial_vbrk-fktyp.
+      WHEN 'WAERK'.
+        lwa_bdcdata-fnam = 'VBRK-WAERK'.
+        lwa_bdcdata-fval = lwa_initial_vbrk-waerk.
+      WHEN 'BELNR'.
+        lwa_bdcdata-fnam = 'VBRK-BELNR'.
+        lwa_bdcdata-fval = lwa_initial_vbrk-belnr.
+      WHEN 'FKDAT'.
+        lwa_bdcdata-fnam = 'VBRK-FKDAT'.
+        lwa_bdcdata-fval = lwa_initial_vbrk-fkdat.
+      WHEN 'ZLSCH'.
+        lwa_bdcdata-fnam = 'VBRK-ZLSCH'.
+        lwa_bdcdata-fval = lwa_initial_vbrk-zlsch.
     ENDCASE.
     APPEND lwa_bdcdata TO lt_bdcdata.
   ENDMETHOD.                    "map_field_data
