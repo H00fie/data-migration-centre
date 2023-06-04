@@ -505,6 +505,14 @@ CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
           map_field_data( i_field = 'ZLSCH' ).
         ENDLOOP.
       WHEN 'VBRP'.
+        LOOP AT lt_initial_vbrp INTO lwa_initial_vbrp.
+          map_program_data( ).
+          map_field_data( i_field = 'VBELN2' ).
+          map_field_data( i_field = 'POSNR' ).
+          map_field_data( i_field = 'MEINS' ).
+          map_field_data( i_field = 'MATNR' ).
+          map_field_data( i_field = 'NETWR' ).
+        ENDLOOP.
     ENDCASE.
   ENDMETHOD.                    "populate_bdcdata_structure
 
@@ -556,6 +564,21 @@ CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
       WHEN 'ZLSCH'.
         lwa_bdcdata-fnam = 'VBRK-ZLSCH'.
         lwa_bdcdata-fval = lwa_initial_vbrk-zlsch.
+      WHEN 'VBELN2'.
+        lwa_bdcdata-fnam = 'VBRP-VBELN'.
+        lwa_bdcdata-fval = lwa_initial_vbrp-vbeln.
+      WHEN 'POSNR'.
+        lwa_bdcdata-fnam = 'VBRP-POSNR'.
+        lwa_bdcdata-fval = lwa_initial_vbrp-posnr.
+      WHEN 'MEINS'.
+        lwa_bdcdata-fnam = 'VBRP-MEINS'.
+        lwa_bdcdata-fval = lwa_initial_vbrp-meins.
+      WHEN 'MATNR'.
+        lwa_bdcdata-fnam = 'VBRP-MATNR'.
+        lwa_bdcdata-fval = lwa_initial_vbrp-matnr.
+      WHEN 'NETWR'.
+        lwa_bdcdata-fnam = 'VBRP-NETWR'.
+        lwa_bdcdata-fval = lwa_initial_vbrp-netwr.
     ENDCASE.
     APPEND lwa_bdcdata TO lt_bdcdata.
   ENDMETHOD.                    "map_field_data
