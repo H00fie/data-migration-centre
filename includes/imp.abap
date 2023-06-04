@@ -191,7 +191,7 @@ CLASS lcl_action_handler IMPLEMENTATION.
                                                                      i_file_structure = lv_file_structure ).
           WHEN 'Call Transaction Technique'.
             lo_call_trans_technique_ini->initialize_the_migration( i_separator_type = lv_separator_type
-                                                                     i_file_structure = lv_file_structure ).
+                                                                   i_file_structure = lv_file_structure ).
         ENDCASE.
     ENDCASE.
   ENDMETHOD.                    "decide_action
@@ -408,6 +408,7 @@ CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
     upload_file( ).
     move_data_to_tab_with_sep_flds( i_separator_type = i_separator_type
                                     i_file_structure = i_file_structure ).
+    populate_bdcdata_structure( i_file_structure = i_file_structure ).
   ENDMETHOD.                    "initialize_migration
 
   METHOD upload_file.
@@ -482,8 +483,55 @@ CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
   ENDMETHOD.                    "populate_initial_vbrp_tab
 
   METHOD populate_bdcdata_structure.
-
+    CASE i_file_structure.
+      WHEN 'KNA1'.
+        LOOP AT lt_initial_kna1 INTO lwa_initial_kna1.
+          map_program_data( ).
+          map_field_data( i_field = 'KUNNR' ).
+          map_field_data( i_field = 'NAME1' ).
+          map_field_data( i_field = 'LAND1' ).
+          map_field_data( i_field = 'REGIO' ).
+          map_field_data( i_field = 'ORT01' ).
+          map_field_data( i_field = 'STRAS' ).
+        ENDLOOP.
+      WHEN 'VBRK'.
+      WHEN 'VBRP'.
+    ENDCASE.
   ENDMETHOD.                    "populate_bdcdata_structure
+
+  METHOD map_program_data.
+    REFRESH lt_bdcdata.
+    CLEAR lwa_bdcdata.
+    lwa_bdcdata-program = sy-repid.
+    lwa_bdcdata-dynpro = '100'.
+    lwa_bdcdata-dynbegin = 'X'.
+    APPEND lwa_bdcdata TO lt_bdcdata.
+  ENDMETHOD.                    "map_program_data
+
+  METHOD map_field_data.
+    CLEAR lwa_bdcdata.
+    CASE i_field.
+      WHEN 'KUNNR'.
+        lwa_bdcdata-fnam = 'KNA1-KUNNR'.
+        lwa_bdcdata-fval = lwa_initial_kna1-kunnr.
+      WHEN 'NAME1'.
+        lwa_bdcdata-fnam = 'KNA1-NAME1'.
+        lwa_bdcdata-fval = lwa_initial_kna1-name1.
+      WHEN 'LAND1'.
+        lwa_bdcdata-fnam = 'KNA1-LAND1'.
+        lwa_bdcdata-fval = lwa_initial_kna1-land1.
+      WHEN 'REGIO'.
+        lwa_bdcdata-fnam = 'KNA1-REGIO'.
+        lwa_bdcdata-fval = lwa_initial_kna1-regio.
+      WHEN 'ORT01'.
+        lwa_bdcdata-fnam = 'KNA1-ORT01'.
+        lwa_bdcdata-fval = lwa_initial_kna1-ort01.
+      WHEN 'STRAS'.
+        lwa_bdcdata-fnam = 'KNA1-STRAS'.
+        lwa_bdcdata-fval = lwa_initial_kna1-stras.
+    ENDCASE.
+    APPEND lwa_bdcdata TO lt_bdcdata.
+  ENDMETHOD.                    "map_field_data
 ENDCLASS.                    "lcl_call_trans_technique_ini
 
 *----------------------------------------------------------------------*
