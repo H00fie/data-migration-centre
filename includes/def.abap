@@ -10,9 +10,12 @@
 CLASS lcl_direct_input_technique_ini DEFINITION.
   PUBLIC SECTION.
     METHODS: initialize_the_migration IMPORTING i_separator_type TYPE string
-                                                i_file_structure TYPE string.
+                                                i_file_structure TYPE string
+                                                i_file_type      TYPE string.
   PRIVATE SECTION.
-    METHODS: upload_file,
+    METHODS: upload_file IMPORTING i_file_type TYPE string,
+             load_text_file,
+             load_excel_file,
              move_data_to_tab_with_sep_flds IMPORTING i_separator_type TYPE string
                                                       i_file_structure TYPE string,
              move_data_to_tab_like_target   IMPORTING i_file_structure TYPE string,
@@ -65,6 +68,8 @@ CLASS lcl_direct_input_technique_ini DEFINITION.
           lt_final_vbrp    TYPE TABLE OF vbrp,
           lwa_final_vbrp   TYPE vbrp.
 
+    DATA: lt_truxs           TYPE truxs_t_text_data,
+          lv_excel_file_path TYPE rlgrap-filename.
 ENDCLASS.                    "lcl_direct_input_technique_ini DEFINITION
 
 CLASS lcl_call_trans_technique_ini DEFINITION.
