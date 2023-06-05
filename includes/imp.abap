@@ -55,7 +55,7 @@ CLASS lcl_visibility_dispenser IMPLEMENTATION.
             MODIFY SCREEN.
           ENDIF.
         ENDLOOP.
-      WHEN 'FC2'.
+      WHEN 'FC2' OR 'FC3'.
         LOOP AT SCREEN.
           IF screen-group1 = 'ID1' OR screen-group1 = 'ID2' OR screen-group1 = 'ID4' OR screen-group1 = 'ID5' OR screen-group1 = 'ID6' OR
              screen-group1 = 'ID7'.
