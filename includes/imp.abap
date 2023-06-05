@@ -193,7 +193,8 @@ CLASS lcl_action_handler IMPLEMENTATION.
                                                                      i_file_type      = lv_file_type ).
           WHEN 'Call Transaction Technique'.
             lo_call_trans_technique_ini->initialize_the_migration( i_separator_type = lv_separator_type
-                                                                   i_file_structure = lv_file_structure ).
+                                                                   i_file_structure = lv_file_structure
+                                                                   i_file_type      = lv_file_type ).
         ENDCASE.
     ENDCASE.
   ENDMETHOD.                    "decide_action
@@ -427,19 +428,39 @@ ENDCLASS.                    "lcl_direct_input_technique_ini IMPLEMENTATION
 *----------------------------------------------------------------------*
 CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
   METHOD initialize_the_migration.
-    upload_file( ).
-    move_data_to_tab_with_sep_flds( i_separator_type = i_separator_type
-                                    i_file_structure = i_file_structure ).
+    upload_file( i_file_type = i_file_type ).
+    IF i_file_type = 'Text'.
+      move_data_to_tab_with_sep_flds( i_separator_type = i_separator_type
+                                      i_file_structure = i_file_structure ).
+    ENDIF.
     populate_bdcdata_structure( i_file_structure = i_file_structure ).
   ENDMETHOD.                    "initialize_migration
 
   METHOD upload_file.
+    CASE i_file_type.
+      WHEN 'Text'.
+        load_text_file( ).
+      WHEN 'Excel'.
+        load_excel_file( ).
+    ENDCASE.
+  ENDMETHOD.                    "upload_file
+
+  METHOD load_text_file.
     CALL FUNCTION 'GUI_UPLOAD'
       EXPORTING
-        filename                      = p_f_path
+        filename = p_f_path
       TABLES
-        data_tab                      = lt_initial.
-  ENDMETHOD.                    "upload_file
+        data_tab = lt_initial.
+  ENDMETHOD.                    "load_text_file
+
+  METHOD load_excel_file.
+    CALL FUNCTION 'TEXT_CONVERT_XLS_TO_SAP'
+      EXPORTING
+        i_tab_raw_data       = lt_truxs
+        i_filename           = lv_excel_file_path
+      TABLES
+        i_tab_converted_data = lt_initial_kna1.
+  ENDMETHOD.                    "load_excel_file
 
   METHOD move_data_to_tab_with_sep_flds.
     CASE i_file_structure.
