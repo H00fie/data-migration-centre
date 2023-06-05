@@ -158,6 +158,7 @@ ENDCLASS.                    "lcl_visibility_dispenser IMPLEMENTATION
 CLASS lcl_action_handler IMPLEMENTATION.
   METHOD constructor.
     me->lo_direct_input_technique_ini = io_direct_input_technique_ini.
+    me->lo_call_trans_technique_ini = io_call_trans_technique_ini.
   ENDMETHOD.                    "constructor
 
   METHOD decide_action.
