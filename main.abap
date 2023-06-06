@@ -10,16 +10,13 @@ INCLUDE DATA_MIGRATION_CENTRE_DEF.
 INCLUDE DATA_MIGRATION_CENTRE_IMP.
 
 INITIALIZATION.
-  DATA(lo_visibility_dispenser)       = NEW lcl_visibility_dispenser( ).
-  DATA(lo_element_remover)            = NEW lcl_element_remover( ).
-  DATA(lo_marker)                     = NEW lcl_marker( ).
-  DATA(lo_direct_input_technique_ini) = NEW lcl_direct_input_technique_ini( ).
-  DATA(lo_call_trans_technique_ini)   = NEW lcl_call_trans_technique_ini( ).
-  DATA(lo_action_handler)             = NEW lcl_action_handler( io_direct_input_technique_ini = lo_direct_input_technique_ini
-                                                                io_call_trans_technique_ini = lo_call_trans_technique_ini ).
-  DATA(lo_screen_adjuster)            = NEW lcl_screen_adjuster( io_element_remover      = lo_element_remover
-                                                                 io_visibility_dispenser = lo_visibility_dispenser
-                                                                 io_marker               = lo_marker ).
+  DATA(lo_visibility_dispenser) = NEW lcl_visibility_dispenser( ).
+  DATA(lo_element_remover)      = NEW lcl_element_remover( ).
+  DATA(lo_marker)               = NEW lcl_marker( ).
+  DATA(lo_action_handler)       = NEW lcl_action_handler( ).
+  DATA(lo_screen_adjuster)      = NEW lcl_screen_adjuster( io_element_remover      = lo_element_remover
+                                                           io_visibility_dispenser = lo_visibility_dispenser
+                                                           io_marker               = lo_marker ).
   lo_visibility_dispenser->make_blocks_invisible_init( ).
 
 AT SELECTION-SCREEN OUTPUT.

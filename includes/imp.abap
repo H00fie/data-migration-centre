@@ -156,10 +156,9 @@ ENDCLASS.                    "lcl_visibility_dispenser IMPLEMENTATION
 *
 *----------------------------------------------------------------------*
 CLASS lcl_action_handler IMPLEMENTATION.
-  METHOD constructor.
-    me->lo_direct_input_technique_ini = io_direct_input_technique_ini.
-    me->lo_call_trans_technique_ini = io_call_trans_technique_ini.
-  ENDMETHOD.                    "constructor
+*  METHOD constructor.
+*    me->lo_direct_input_technique_ini = io_direct_input_technique_ini.
+*  ENDMETHOD.                    "constructor
 
   METHOD decide_action.
     CASE sy-ucomm.
@@ -186,16 +185,7 @@ CLASS lcl_action_handler IMPLEMENTATION.
       WHEN 'FC12'.
         set_migration_technique( i_migration_technique = 'Call Transaction Technique' ).
       WHEN 'FC13'.
-        CASE lv_migration_technique.
-          WHEN 'Direct Input Method'.
-            lo_direct_input_technique_ini->initialize_the_migration( i_separator_type = lv_separator_type
-                                                                     i_file_structure = lv_file_structure
-                                                                     i_file_type      = lv_file_type ).
-          WHEN 'Call Transaction Technique'.
-            lo_call_trans_technique_ini->initialize_the_migration( i_separator_type = lv_separator_type
-                                                                   i_file_structure = lv_file_structure
-                                                                   i_file_type      = lv_file_type ).
-        ENDCASE.
+        carry_out_migration( ).
     ENDCASE.
   ENDMETHOD.                    "decide_action
 
@@ -218,6 +208,14 @@ CLASS lcl_action_handler IMPLEMENTATION.
   METHOD set_migration_technique.
     lv_migration_technique = i_migration_technique.
   ENDMETHOD.                    "set_migration_technique
+
+  METHOD carry_out_migration.
+    DATA(lo_factory) = NEW lcl_factory( ).
+    lo_migrator = lo_factory->provide_chosen_migrator( i_migration_technique = lv_migration_technique ).
+    lo_migrator->initialize_the_migration( i_separator_type = lv_separator_type
+                                           i_file_structure = lv_file_structure
+                                           i_file_type      = lv_file_type ).
+  ENDMETHOD.                    "carry_out_migration
 ENDCLASS.                    "lcl_action_handler IMPLEMENTATION
 
 *----------------------------------------------------------------------*
@@ -259,8 +257,9 @@ ENDCLASS.                    "lcl_marker IMPLEMENTATION
 *
 *----------------------------------------------------------------------*
 CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
-  METHOD initialize_the_migration.
-    upload_file( i_file_type = i_file_type ).
+  METHOD lif_migrator~initialize_the_migration.
+    upload_file( i_file_type = i_file_type
+                 i_separator_type = i_separator_type ).
     IF i_file_type = 'Text'.
       move_data_to_tab_with_sep_flds( i_separator_type = i_separator_type
                                       i_file_structure = i_file_structure ).
@@ -427,7 +426,7 @@ ENDCLASS.                    "lcl_direct_input_technique_ini IMPLEMENTATION
 *
 *----------------------------------------------------------------------*
 CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
-  METHOD initialize_the_migration.
+  METHOD lif_migrator~initialize_the_migration.
     upload_file( i_file_type = i_file_type ).
     IF i_file_type = 'Text'.
       move_data_to_tab_with_sep_flds( i_separator_type = i_separator_type
@@ -628,7 +627,25 @@ CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
     ENDCASE.
     APPEND lwa_bdcdata TO lt_bdcdata.
   ENDMETHOD.                    "map_field_data
-ENDCLASS.                    "lcl_call_trans_technique_ini
+ENDCLASS.                    "lcl_call_trans_technique_ini IMPLEMENTATION
+
+*----------------------------------------------------------------------*
+*       CLASS lcl_factory IMPLEMENTATION
+*----------------------------------------------------------------------*
+*
+*----------------------------------------------------------------------*
+CLASS lcl_factory IMPLEMENTATION.
+  METHOD provide_chosen_migrator.
+    CASE i_migration_technique.
+      WHEN 'Direct Input Method'.
+        DATA(lo_direct_input_technique_ini) = NEW lcl_direct_input_technique_ini( ).
+        r_o_migrator = lo_direct_input_technique_ini.
+      WHEN 'Call Transaction Technique'.
+        DATA(lo_call_trans_technique_ini) = NEW lcl_call_trans_technique_ini( ).
+        r_o_migrator = lo_call_trans_technique_ini.
+    ENDCASE.
+  ENDMETHOD.                    "provide_chosen_migrator
+ENDCLASS.                    "lcl_factory IMPLEMENTATION
 
 *----------------------------------------------------------------------*
 *       CLASS lcl_f4_help_provider IMPLEMENTATION

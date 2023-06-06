@@ -3,17 +3,27 @@
 *&---------------------------------------------------------------------*
 
 *----------------------------------------------------------------------*
+*       INTERFACE lif_migrator
+*----------------------------------------------------------------------*
+*
+*----------------------------------------------------------------------*
+INTERFACE lif_migrator.
+  METHODS: initialize_the_migration IMPORTING i_separator_type TYPE string
+                                          i_file_structure TYPE string
+                                          i_file_type      TYPE string.
+ENDINTERFACE.                    "lif_migrator
+
+*----------------------------------------------------------------------*
 *       CLASS lcl_direct_input_technique_ini DEFINITION
 *----------------------------------------------------------------------*
 *
 *----------------------------------------------------------------------*
 CLASS lcl_direct_input_technique_ini DEFINITION.
   PUBLIC SECTION.
-    METHODS: initialize_the_migration IMPORTING i_separator_type TYPE string
-                                                i_file_structure TYPE string
-                                                i_file_type      TYPE string.
+    INTERFACES: lif_migrator.
   PRIVATE SECTION.
-    METHODS: upload_file IMPORTING i_file_type TYPE string,
+    METHODS: upload_file                    IMPORTING i_file_type      TYPE string
+                                                      i_separator_type TYPE string,
              load_text_file,
              load_excel_file,
              move_data_to_tab_with_sep_flds IMPORTING i_separator_type TYPE string
@@ -74,9 +84,7 @@ ENDCLASS.                    "lcl_direct_input_technique_ini DEFINITION
 
 CLASS lcl_call_trans_technique_ini DEFINITION.
   PUBLIC SECTION.
-    METHODS: initialize_the_migration IMPORTING i_separator_type TYPE string
-                                                i_file_structure TYPE string
-                                                i_file_type      TYPE string.
+    INTERFACES: lif_migrator.
   PRIVATE SECTION.
     METHODS: upload_file IMPORTING i_file_type TYPE string,
              load_text_file,
@@ -168,22 +176,21 @@ ENDCLASS.                    "lcl_visibility_dispenser DEFINITION
 *----------------------------------------------------------------------*
 CLASS lcl_action_handler DEFINITION.
   PUBLIC SECTION.
-    METHODS: constructor IMPORTING io_direct_input_technique_ini TYPE REF TO lcl_direct_input_technique_ini
-                                   io_call_trans_technique_ini   TYPE REF TO lcl_call_trans_technique_ini,
+    METHODS: "constructor IMPORTING io_migrator TYPE REF TO lif_migrator,
              decide_action.
   PRIVATE SECTION.
-    METHODS: set_file_type      IMPORTING i_file_type      TYPE string,
-             set_separator_type IMPORTING i_separator_type TYPE string,
-             set_file_structure IMPORTING i_file_structure TYPE string,
-             set_file_location  IMPORTING i_file_location  TYPE string,
-             set_migration_technique IMPORTING i_migration_technique TYPE string.
-    DATA: lo_direct_input_technique_ini TYPE REF TO lcl_direct_input_technique_ini,
-          lo_call_trans_technique_ini   TYPE REF TO lcl_call_trans_technique_ini,
-          lv_file_type                  TYPE string,
-          lv_separator_type             TYPE string,
-          lv_file_structure             TYPE string,
-          lv_file_location              TYPE string,
-          lv_migration_technique        TYPE string.
+    METHODS: set_file_type           IMPORTING i_file_type           TYPE string,
+             set_separator_type      IMPORTING i_separator_type      TYPE string,
+             set_file_structure      IMPORTING i_file_structure      TYPE string,
+             set_file_location       IMPORTING i_file_location       TYPE string,
+             set_migration_technique IMPORTING i_migration_technique TYPE string,
+             carry_out_migration.
+    DATA: lo_migrator            TYPE REF TO lif_migrator,
+          lv_file_type           TYPE string,
+          lv_separator_type      TYPE string,
+          lv_file_structure      TYPE string,
+          lv_file_location       TYPE string,
+          lv_migration_technique TYPE string.
 ENDCLASS.                    "lcl_action_handler DEFINITION
 
 *----------------------------------------------------------------------*
@@ -215,6 +222,17 @@ CLASS lcl_screen_adjuster DEFINITION.
           lo_visibility_dispenser TYPE REF TO lcl_visibility_dispenser,
           lo_marker               TYPE REF TO lcl_marker.
 ENDCLASS.                    "lcl_screen_adjuster DEFINITION
+
+*----------------------------------------------------------------------*
+*       CLASS lcl_factory DEFINITION
+*----------------------------------------------------------------------*
+*
+*----------------------------------------------------------------------*
+CLASS lcl_factory DEFINITION.
+  PUBLIC SECTION.
+    CLASS-METHODS: provide_chosen_migrator IMPORTING i_migration_technique TYPE string
+                                           RETURNING VALUE(r_o_migrator)   TYPE REF TO lif_migrator.
+ENDCLASS.                    "lcl_factory DEFINITION
 
 *----------------------------------------------------------------------*
 *       CLASS lcl_f4_help_provider DEFINITION
