@@ -291,7 +291,8 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
         EXIT.
       ENDIF.
     ELSE.
-      MESSAGE lv_msg TYPE 'I'.
+      MESSAGE lv_msg TYPE 'E'.
+      LEAVE LIST-PROCESSING.
     ENDIF.
   ENDMETHOD.                    "upload_server_file
 
