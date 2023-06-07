@@ -210,7 +210,8 @@ CLASS lcl_action_handler IMPLEMENTATION.
     lo_migrator = lo_factory->provide_chosen_migrator( i_migration_technique = lv_migration_technique ).
     lo_migrator->initialize_the_migration( i_separator_type = lv_separator_type
                                            i_file_structure = lv_file_structure
-                                           i_file_type      = lv_file_type ).
+                                           i_file_type      = lv_file_type
+                                           i_file_location  = lv_file_location ).
   ENDMETHOD.                    "carry_out_migration
 ENDCLASS.                    "lcl_action_handler IMPLEMENTATION
 
@@ -254,8 +255,12 @@ ENDCLASS.                    "lcl_marker IMPLEMENTATION
 *----------------------------------------------------------------------*
 CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
   METHOD lif_migrator~initialize_the_migration.
-    upload_local_file( i_file_type = i_file_type
-                       i_separator_type = i_separator_type ).
+    IF i_file_location = 'Locally'.
+      upload_local_file( i_file_type = i_file_type
+                         i_separator_type = i_separator_type ).
+    ELSE.
+
+    ENDIF.
     IF i_file_type = 'Text'.
       move_data_to_tab_with_sep_flds( i_separator_type = i_separator_type
                                       i_file_structure = i_file_structure ).
@@ -272,6 +277,9 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
         load_excel_file( ).
     ENDCASE.
   ENDMETHOD.                    "upload_local_file
+
+  METHOD upload_server_file.
+  ENDMETHOD.                    "upload_server_file
 
   METHOD load_text_file.
     CALL FUNCTION 'GUI_UPLOAD'
@@ -624,14 +632,6 @@ CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
     APPEND lwa_bdcdata TO lt_bdcdata.
   ENDMETHOD.                    "map_field_data
 ENDCLASS.                    "lcl_call_trans_technique_ini IMPLEMENTATION
-
-*----------------------------------------------------------------------*
-*       CLASS lcl_session_technique_ini IMPLEMENTATION
-*----------------------------------------------------------------------*
-*
-*----------------------------------------------------------------------*
-CLASS lcl_session_technique_ini IMPLEMENTATION.
-ENDCLASS.                    "lcl_session_technique_ini IMPLEMENTATION
 
 *----------------------------------------------------------------------*
 *       CLASS lcl_factory IMPLEMENTATION

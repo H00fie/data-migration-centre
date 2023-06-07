@@ -10,7 +10,8 @@
 INTERFACE lif_migrator.
   METHODS: initialize_the_migration IMPORTING i_separator_type TYPE string
                                               i_file_structure TYPE string
-                                              i_file_type      TYPE string.
+                                              i_file_type      TYPE string
+                                              i_file_location  TYPE string.
 ENDINTERFACE.                    "lif_migrator
 
 *----------------------------------------------------------------------*
@@ -24,6 +25,7 @@ CLASS lcl_direct_input_technique_ini DEFINITION.
   PRIVATE SECTION.
     METHODS: upload_local_file              IMPORTING i_file_type      TYPE string
                                                       i_separator_type TYPE string,
+             upload_server_file,
              load_text_file,
              load_excel_file,
              move_data_to_tab_with_sep_flds IMPORTING i_separator_type TYPE string
