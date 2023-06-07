@@ -156,10 +156,6 @@ ENDCLASS.                    "lcl_visibility_dispenser IMPLEMENTATION
 *
 *----------------------------------------------------------------------*
 CLASS lcl_action_handler IMPLEMENTATION.
-*  METHOD constructor.
-*    me->lo_direct_input_technique_ini = io_direct_input_technique_ini.
-*  ENDMETHOD.                    "constructor
-
   METHOD decide_action.
     CASE sy-ucomm.
       WHEN 'FC2'.
@@ -258,8 +254,8 @@ ENDCLASS.                    "lcl_marker IMPLEMENTATION
 *----------------------------------------------------------------------*
 CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
   METHOD lif_migrator~initialize_the_migration.
-    upload_file( i_file_type = i_file_type
-                 i_separator_type = i_separator_type ).
+    upload_local_file( i_file_type = i_file_type
+                       i_separator_type = i_separator_type ).
     IF i_file_type = 'Text'.
       move_data_to_tab_with_sep_flds( i_separator_type = i_separator_type
                                       i_file_structure = i_file_structure ).
@@ -268,14 +264,14 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
     move_data_to_database_table( i_file_structure = i_file_structure ).
   ENDMETHOD.                    "initialize_the_migration
 
-  METHOD upload_file.
+  METHOD upload_local_file.
     CASE i_file_type.
       WHEN 'Text'.
         load_text_file( ).
       WHEN 'Excel'.
         load_excel_file( ).
     ENDCASE.
-  ENDMETHOD.                    "upload_file
+  ENDMETHOD.                    "upload_local_file
 
   METHOD load_text_file.
     CALL FUNCTION 'GUI_UPLOAD'
@@ -427,7 +423,7 @@ ENDCLASS.                    "lcl_direct_input_technique_ini IMPLEMENTATION
 *----------------------------------------------------------------------*
 CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
   METHOD lif_migrator~initialize_the_migration.
-    upload_file( i_file_type = i_file_type ).
+    upload_local_file( i_file_type = i_file_type ).
     IF i_file_type = 'Text'.
       move_data_to_tab_with_sep_flds( i_separator_type = i_separator_type
                                       i_file_structure = i_file_structure ).
@@ -435,14 +431,14 @@ CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
     populate_bdcdata_structure( i_file_structure = i_file_structure ).
   ENDMETHOD.                    "initialize_migration
 
-  METHOD upload_file.
+  METHOD upload_local_file.
     CASE i_file_type.
       WHEN 'Text'.
         load_text_file( ).
       WHEN 'Excel'.
         load_excel_file( ).
     ENDCASE.
-  ENDMETHOD.                    "upload_file
+  ENDMETHOD.                    "upload_local_file
 
   METHOD load_text_file.
     CALL FUNCTION 'GUI_UPLOAD'
@@ -628,6 +624,14 @@ CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
     APPEND lwa_bdcdata TO lt_bdcdata.
   ENDMETHOD.                    "map_field_data
 ENDCLASS.                    "lcl_call_trans_technique_ini IMPLEMENTATION
+
+*----------------------------------------------------------------------*
+*       CLASS lcl_session_technique_ini IMPLEMENTATION
+*----------------------------------------------------------------------*
+*
+*----------------------------------------------------------------------*
+CLASS lcl_session_technique_ini IMPLEMENTATION.
+ENDCLASS.                    "lcl_session_technique_ini IMPLEMENTATION
 
 *----------------------------------------------------------------------*
 *       CLASS lcl_factory IMPLEMENTATION

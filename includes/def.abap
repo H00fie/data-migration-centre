@@ -9,8 +9,8 @@
 *----------------------------------------------------------------------*
 INTERFACE lif_migrator.
   METHODS: initialize_the_migration IMPORTING i_separator_type TYPE string
-                                          i_file_structure TYPE string
-                                          i_file_type      TYPE string.
+                                              i_file_structure TYPE string
+                                              i_file_type      TYPE string.
 ENDINTERFACE.                    "lif_migrator
 
 *----------------------------------------------------------------------*
@@ -22,7 +22,7 @@ CLASS lcl_direct_input_technique_ini DEFINITION.
   PUBLIC SECTION.
     INTERFACES: lif_migrator.
   PRIVATE SECTION.
-    METHODS: upload_file                    IMPORTING i_file_type      TYPE string
+    METHODS: upload_local_file              IMPORTING i_file_type      TYPE string
                                                       i_separator_type TYPE string,
              load_text_file,
              load_excel_file,
@@ -82,11 +82,16 @@ CLASS lcl_direct_input_technique_ini DEFINITION.
           lv_excel_file_path TYPE rlgrap-filename.
 ENDCLASS.                    "lcl_direct_input_technique_ini DEFINITION
 
+*----------------------------------------------------------------------*
+*       CLASS lcl_call_trans_technique_ini DEFINITION
+*----------------------------------------------------------------------*
+*
+*----------------------------------------------------------------------*
 CLASS lcl_call_trans_technique_ini DEFINITION.
   PUBLIC SECTION.
     INTERFACES: lif_migrator.
   PRIVATE SECTION.
-    METHODS: upload_file IMPORTING i_file_type TYPE string,
+    METHODS: upload_local_file IMPORTING i_file_type TYPE string,
              load_text_file,
              load_excel_file,
              move_data_to_tab_with_sep_flds IMPORTING i_separator_type TYPE string
@@ -176,8 +181,7 @@ ENDCLASS.                    "lcl_visibility_dispenser DEFINITION
 *----------------------------------------------------------------------*
 CLASS lcl_action_handler DEFINITION.
   PUBLIC SECTION.
-    METHODS: "constructor IMPORTING io_migrator TYPE REF TO lif_migrator,
-             decide_action.
+    METHODS: decide_action.
   PRIVATE SECTION.
     METHODS: set_file_type           IMPORTING i_file_type           TYPE string,
              set_separator_type      IMPORTING i_separator_type      TYPE string,
