@@ -677,7 +677,8 @@ ENDCLASS.                    "lcl_call_trans_technique_ini IMPLEMENTATION
 CLASS lcl_session_technique_ini IMPLEMENTATION.
   METHOD lif_migrator~initialize_the_migration.
     IF i_file_location = 'Locally'.
-      upload_local_file( i_file_type = i_file_type ).
+      upload_local_file( i_file_type = i_file_type
+                         i_file_structure = i_file_structure ).
     ELSE.
       upload_server_file( ).
     ENDIF.
@@ -688,7 +689,7 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
       WHEN 'Text'.
         load_text_file( ).
       WHEN 'Excel'.
-        load_excel_file( ).
+        load_excel_file( i_file_structure = i_file_structure ).
     ENDCASE.
   ENDMETHOD.                    "upload_local_file
 
@@ -701,12 +702,17 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
   ENDMETHOD.                    "load_text_file
 
   METHOD load_excel_file.
-    CALL FUNCTION 'TEXT_CONVERT_XLS_TO_SAP'
-      EXPORTING
-        i_tab_raw_data       = lt_truxs
-        i_filename           = lv_excel_file_path
-      TABLES
-        i_tab_converted_data = lt_initial_kna1.
+    CASE .
+    	WHEN 'KNA1'.
+        CALL FUNCTION 'TEXT_CONVERT_XLS_TO_SAP'
+          EXPORTING
+            i_tab_raw_data       = lt_truxs
+            i_filename           = lv_excel_file_path
+          TABLES
+            i_tab_converted_data = lt_initial_kna1.
+    	WHEN 'VBRK'.
+    	WHEN 'VBRP'.
+    ENDCASE.
   ENDMETHOD.                    "load_excel_file
 
   METHOD upload_server_file.

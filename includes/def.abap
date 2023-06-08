@@ -164,10 +164,11 @@ CLASS lcl_session_technique_ini DEFINITION.
   PUBLIC SECTION.
     INTERFACES: lif_migrator.
   PRIVATE SECTION.
-    METHODS: upload_local_file IMPORTING i_file_type TYPE string,
+    METHODS: upload_local_file IMPORTING i_file_type      TYPE string
+                                         i_file_structure TYPE string,
              upload_server_file,
              load_text_file,
-             load_excel_file.
+             load_excel_file   IMPORTING i_file_structure TYPE string.
 
     TYPES: BEGIN OF t_initial,
       string TYPE string,
