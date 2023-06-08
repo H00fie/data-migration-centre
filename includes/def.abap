@@ -168,11 +168,28 @@ CLASS lcl_session_technique_ini DEFINITION.
              upload_server_file,
              load_text_file,
              load_excel_file.
+
     TYPES: BEGIN OF t_initial,
       string TYPE string,
     END OF t_initial.
     DATA: lt_initial  TYPE TABLE OF t_initial,
           lwa_initial TYPE t_initial.
+
+    TYPES: BEGIN OF t_initial_kna1,
+      kunnr TYPE kna1-kunnr,
+      name1 TYPE kna1-name1,
+      land1 TYPE kna1-land1,
+      regio TYPE kna1-regio,
+      ort01 TYPE kna1-ort01,
+      stras TYPE kna1-stras,
+    END OF t_initial_kna1.
+    DATA: lt_initial_kna1  TYPE TABLE OF t_initial_kna1,
+          lwa_initial_kna1 TYPE t_initial_kna1,
+          lt_final_kna1    TYPE TABLE OF kna1,
+          lwa_final_kna1   TYPE kna1.
+
+    DATA: lt_truxs           TYPE truxs_t_text_data,
+          lv_excel_file_path TYPE rlgrap-filename.
 ENDCLASS.                    "lcl_session_technique_ini DEFINITION
 
 *----------------------------------------------------------------------*

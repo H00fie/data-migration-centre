@@ -685,11 +685,10 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
 
   METHOD upload_local_file.
     CASE i_file_type.
-    	WHEN 'Text'.
+      WHEN 'Text'.
         load_text_file( ).
-    	WHEN 'Excel'.
+      WHEN 'Excel'.
         load_excel_file( ).
-    	WHEN OTHERS.
     ENDCASE.
   ENDMETHOD.                    "upload_local_file
 
@@ -702,6 +701,12 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
   ENDMETHOD.                    "load_text_file
 
   METHOD load_excel_file.
+    CALL FUNCTION 'TEXT_CONVERT_XLS_TO_SAP'
+      EXPORTING
+        i_tab_raw_data       = lt_truxs
+        i_filename           = lv_excel_file_path
+      TABLES
+        i_tab_converted_data = lt_initial_kna1.
   ENDMETHOD.                    "load_excel_file
 
   METHOD upload_server_file.
