@@ -446,8 +446,7 @@ ENDCLASS.                    "lcl_direct_input_technique_ini IMPLEMENTATION
 CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
   METHOD lif_migrator~initialize_the_migration.
     IF i_file_location = 'Locally'.
-      upload_local_file( i_file_type = i_file_type
-                         i_separator_type = i_separator_type ).
+      upload_local_file( i_file_type = i_file_type ).
     ELSE.
       upload_server_file( ).
     ENDIF.

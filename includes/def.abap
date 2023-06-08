@@ -92,8 +92,7 @@ CLASS lcl_call_trans_technique_ini DEFINITION.
   PUBLIC SECTION.
     INTERFACES: lif_migrator.
   PRIVATE SECTION.
-    METHODS: upload_local_file              IMPORTING i_file_type      TYPE string
-                                                      i_separator_type TYPE string,
+    METHODS: upload_local_file              IMPORTING i_file_type      TYPE string,
              upload_server_file,
              load_text_file,
              load_excel_file,
