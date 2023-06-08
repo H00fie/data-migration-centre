@@ -120,7 +120,7 @@ CLASS lcl_visibility_dispenser IMPLEMENTATION.
             MODIFY SCREEN.
           ENDIF.
         ENDLOOP.
-      WHEN 'FC9'.
+      WHEN 'FC9' OR 'FC10'.
         LOOP AT SCREEN.
           IF screen-group1 = 'ID1' OR screen-group1 = 'ID2' OR screen-group1 = 'ID3' OR screen-group1 = 'ID4' OR screen-group1 = 'ID5' OR
              screen-group1 = 'ID7'.
@@ -259,7 +259,7 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
       upload_local_file( i_file_type = i_file_type
                          i_separator_type = i_separator_type ).
     ELSE.
-	  upload_server_file( ).
+      upload_server_file( ).
     ENDIF.
     IF i_file_type = 'Text'.
       move_data_to_tab_with_sep_flds( i_separator_type = i_separator_type
@@ -446,7 +446,11 @@ ENDCLASS.                    "lcl_direct_input_technique_ini IMPLEMENTATION
 *----------------------------------------------------------------------*
 CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
   METHOD lif_migrator~initialize_the_migration.
-    upload_local_file( i_file_type = i_file_type ).
+    IF i_file_location = 'Locally'.
+      upload_local_file( i_file_type = i_file_type ).
+    ELSE.
+      upload_server_file( ).
+    ENDIF.
     IF i_file_type = 'Text'.
       move_data_to_tab_with_sep_flds( i_separator_type = i_separator_type
                                       i_file_structure = i_file_structure ).
@@ -462,6 +466,24 @@ CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
         load_excel_file( ).
     ENDCASE.
   ENDMETHOD.                    "upload_local_file
+
+  METHOD upload_server_file.
+    DATA: lv_msg TYPE string.
+    OPEN DATASET p_f_path FOR INPUT IN TEXT MODE ENCODING DEFAULT MESSAGE lv_msg.
+    IF sy-subrc = 0.
+      CLEAR: lwa_initial.
+      READ DATASET p_f_path INTO lwa_initial-string.
+      IF sy-subrc = 0.
+        APPEND lwa_initial TO lt_initial.
+      ELSE.
+        CLOSE DATASET p_f_path.
+        EXIT.
+      ENDIF.
+    ELSE.
+      MESSAGE lv_msg TYPE 'E'.
+      LEAVE LIST-PROCESSING.
+    ENDIF.
+  ENDMETHOD.                    "upload_server_file
 
   METHOD load_text_file.
     CALL FUNCTION 'GUI_UPLOAD'
