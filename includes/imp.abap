@@ -455,7 +455,7 @@ CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
                                       i_file_structure = i_file_structure ).
     ENDIF.
     populate_bdcdata_structure( i_file_structure = i_file_structure ).
-  ENDMETHOD.                    "initialize_migration
+  ENDMETHOD.                    "initialize_the_migration
 
   METHOD upload_local_file.
     CASE i_file_type.
@@ -668,6 +668,45 @@ CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
     APPEND lwa_bdcdata TO lt_bdcdata.
   ENDMETHOD.                    "map_field_data
 ENDCLASS.                    "lcl_call_trans_technique_ini IMPLEMENTATION
+
+*----------------------------------------------------------------------*
+*       CLASS lcl_session_technique_ini IMPLEMENTATION
+*----------------------------------------------------------------------*
+*
+*----------------------------------------------------------------------*
+CLASS lcl_session_technique_ini IMPLEMENTATION.
+  METHOD lif_migrator~initialize_the_migration.
+    IF i_file_location = 'Locally'.
+      upload_local_file( i_file_type = i_file_type ).
+    ELSE.
+      upload_server_file( ).
+    ENDIF.
+  ENDMETHOD.                    "initialize_the_migration
+
+  METHOD upload_local_file.
+    CASE i_file_type.
+    	WHEN 'Text'.
+        load_text_file( ).
+    	WHEN 'Excel'.
+        load_excel_file( ).
+    	WHEN OTHERS.
+    ENDCASE.
+  ENDMETHOD.                    "upload_local_file
+
+  METHOD load_text_file.
+    CALL FUNCTION 'GUI_UPLOAD'
+      EXPORTING
+        filename = p_f_path
+      TABLES
+        data_tab = lt_initial.
+  ENDMETHOD.                    "load_text_file
+
+  METHOD load_excel_file.
+  ENDMETHOD.                    "load_excel_file
+
+  METHOD upload_server_file.
+  ENDMETHOD.                    "upload_server_filer
+ENDCLASS.                    "lcl_session_technique_ini IMPLEMENTATION
 
 *----------------------------------------------------------------------*
 *       CLASS lcl_factory IMPLEMENTATION
