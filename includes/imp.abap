@@ -256,7 +256,8 @@ ENDCLASS.                    "lcl_marker IMPLEMENTATION
 CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
   METHOD lif_migrator~initialize_the_migration.
     IF i_file_location = 'Locally'.
-      upload_local_file( i_file_type = i_file_type ).
+      upload_local_file( i_file_type = i_file_type
+                         i_file_structure = i_file_structure ).
     ELSE.
       upload_server_file( ).
     ENDIF.
@@ -273,7 +274,7 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
       WHEN 'Text'.
         load_text_file( ).
       WHEN 'Excel'.
-        load_excel_file( ).
+        load_excel_file( i_file_structure = i_file_structure ).
     ENDCASE.
   ENDMETHOD.                    "upload_local_file
 
@@ -304,12 +305,17 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
   ENDMETHOD.                    "load_text_file
 
   METHOD load_excel_file.
-    CALL FUNCTION 'TEXT_CONVERT_XLS_TO_SAP'
-      EXPORTING
-        i_tab_raw_data       = lt_truxs
-        i_filename           = lv_excel_file_path
-      TABLES
-        i_tab_converted_data = lt_initial_kna1.
+    CASE i_file_structure.
+      WHEN 'KNA1'.
+        CALL FUNCTION 'TEXT_CONVERT_XLS_TO_SAP'
+          EXPORTING
+            i_tab_raw_data       = lt_truxs
+            i_filename           = lv_excel_file_path
+          TABLES
+            i_tab_converted_data = lt_initial_kna1.
+      WHEN 'VBRK'.
+      WHEN 'VBRP'.
+    ENDCASE.
   ENDMETHOD.                    "load_excel_file
 
   METHOD move_data_to_tab_with_sep_flds.
@@ -416,23 +422,23 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
       WHEN 'KNA1'.
         MODIFY kna1 FROM TABLE lt_final_kna1.
         IF sy-subrc = 0.
-          MESSAGE i000(data_mig_centre).
+          MESSAGE i000(zbmierzwi_test_msg2).
         ELSE.
-          MESSAGE i001(data_mig_centre).
+          MESSAGE i001(zbmierzwi_test_msg2).
         ENDIF.
       WHEN 'VBRK'.
         MODIFY vbrk FROM TABLE lt_final_vbrk.
         IF sy-subrc = 0.
-          MESSAGE i002(data_mig_centre).
+          MESSAGE i002(zbmierzwi_test_msg2).
         ELSE.
-          MESSAGE i003(data_mig_centre).
+          MESSAGE i003(zbmierzwi_test_msg2).
         ENDIF.
       WHEN 'VBRP'.
         MODIFY vbrp FROM TABLE lt_final_vbrp.
         IF sy-subrc = 0.
-          MESSAGE i003(data_mig_centre).
+          MESSAGE i003(zbmierzwi_test_msg2).
         ELSE.
-          MESSAGE i004(data_mig_centre).
+          MESSAGE i004(zbmierzwi_test_msg2).
         ENDIF.
     ENDCASE.
   ENDMETHOD.                    "move_data_to_database_table
