@@ -201,6 +201,18 @@ CLASS lcl_session_technique_ini DEFINITION.
           lwa_initial_vbrk TYPE t_initial_vbrk,
           lt_final_vbrk    TYPE TABLE OF vbrk,
           lwa_final_vbrk   TYPE vbrk.
+		  
+    TYPES: BEGIN OF t_initial_vbrp,
+      vbeln TYPE vbrp-vbeln,
+      posnr TYPE vbrp-posnr,
+      meins TYPE vbrp-meins,
+      matnr TYPE vbrp-matnr,
+      netwr TYPE vbrp-netwr,
+    END OF t_initial_vbrp.
+    DATA: lt_initial_vbrp  TYPE TABLE OF t_initial_vbrp,
+          lwa_initial_vbrp TYPE t_initial_vbrp,
+          lt_final_vbrp    TYPE TABLE OF vbrp,
+          lwa_final_vbrp   TYPE vbrp.
 
     DATA: lt_truxs           TYPE truxs_t_text_data,
           lv_excel_file_path TYPE rlgrap-filename.
