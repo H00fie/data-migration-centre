@@ -189,6 +189,19 @@ CLASS lcl_session_technique_ini DEFINITION.
           lt_final_kna1    TYPE TABLE OF kna1,
           lwa_final_kna1   TYPE kna1.
 
+    TYPES: BEGIN OF t_initial_vbrk,
+      vbeln TYPE vbrk-vbeln,
+      fktyp TYPE vbrk-fktyp,
+      waerk TYPE vbrk-waerk,
+      belnr TYPE vbrk-belnr,
+      fkdat TYPE vbrk-fkdat,
+      zlsch TYPE vbrk-zlsch,
+    END OF t_initial_vbrk.
+    DATA: lt_initial_vbrk  TYPE TABLE OF t_initial_vbrk,
+          lwa_initial_vbrk TYPE t_initial_vbrk,
+          lt_final_vbrk    TYPE TABLE OF vbrk,
+          lwa_final_vbrk   TYPE vbrk.
+
     DATA: lt_truxs           TYPE truxs_t_text_data,
           lv_excel_file_path TYPE rlgrap-filename.
 ENDCLASS.                    "lcl_session_technique_ini DEFINITION
