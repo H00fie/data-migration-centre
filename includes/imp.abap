@@ -510,6 +510,12 @@ CLASS lcl_call_trans_technique_ini IMPLEMENTATION.
           TABLES
             i_tab_converted_data = lt_initial_vbrk.
       WHEN 'VBRP'.
+        CALL FUNCTION 'TEXT_CONVERT_XLS_TO_SAP'
+          EXPORTING
+            i_tab_raw_data       = lt_truxs
+            i_filename           = lv_excel_file_path
+          TABLES
+            i_tab_converted_data = lt_initial_vbrp.
     ENDCASE.
   ENDMETHOD.                    "load_excel_file
 
