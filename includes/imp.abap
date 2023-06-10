@@ -862,10 +862,22 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
   METHOD populate_bdcdata_structure.
     CASE i_file_structure.
       WHEN 'KNA1'.
+        map_program_data( ).
       WHEN 'VBRK'.
+        map_program_data( ).
       WHEN 'VBRP'.
+        map_program_data( ).
     ENDCASE.
   ENDMETHOD.                    "populate_bdcdata_structure
+
+  METHOD map_program_data.
+    REFRESH lt_bdcdata.
+    CLEAR lwa_bdcdata.
+    lwa_bdcdata-program = sy-repid.
+    lwa_bdcdata-dynpro = '100'.
+    lwa_bdcdata-dynbegin = 'X'.
+    APPEND lwa_bdcdata TO lt_bdcdata.
+  ENDMETHOD.                    "map_program_data
   
   METHOD close_session_object.
     CALL FUNCTION 'BDC_CLOSE_GROUP'.
