@@ -718,6 +718,10 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
     ELSE.
       upload_server_file( ).
     ENDIF.
+    IF i_file_type = 'Text'.
+      move_data_to_tab_with_sep_flds( i_separator_type = i_separator_type
+                                      i_file_structure = i_file_structure ).
+    ENDIF.
   ENDMETHOD.                    "initialize_the_migration
 
   METHOD upload_local_file.
@@ -780,6 +784,27 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
       LEAVE LIST-PROCESSING.
     ENDIF.
   ENDMETHOD.                    "upload_server_file
+  
+  METHOD move_data_to_tab_with_sep_flds.
+    CASE i_file_structure.
+      WHEN 'KNA1'.
+        populate_initial_kna1_tab( i_separator_type = i_separator_type ).
+      WHEN 'VBRK'.
+      WHEN 'VBRP'.
+    ENDCASE.
+  ENDMETHOD.                    "move_data_to_tab_with_sep_flds
+
+  METHOD populate_initial_kna1_tab.
+    LOOP AT lt_initial INTO lwa_initial.
+      CLEAR lwa_initial_kna1.
+      SPLIT lwa_initial-string AT i_separator_type INTO lwa_initial_kna1-kunnr
+                                                        lwa_initial_kna1-land1
+                                                        lwa_initial_kna1-regio
+                                                        lwa_initial_kna1-ort01
+                                                        lwa_initial_kna1-stras.
+      APPEND lwa_initial_kna1 TO lt_initial_kna1.
+    ENDLOOP.
+  ENDMETHOD.                    "populate_initial_kna1_tab
 ENDCLASS.                    "lcl_session_technique_ini IMPLEMENTATION
 
 *----------------------------------------------------------------------*
