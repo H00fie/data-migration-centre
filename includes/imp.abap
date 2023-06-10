@@ -795,6 +795,7 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
       WHEN 'VBRK'.
         populate_initial_vbrk_tab( i_separator_type = i_separator_type ).
       WHEN 'VBRP'.
+        populate_initial_vbrp_tab( i_separator_type = i_separator_type ).
     ENDCASE.
   ENDMETHOD.                    "move_data_to_tab_with_sep_flds
 
