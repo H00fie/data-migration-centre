@@ -819,6 +819,33 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
       APPEND lwa_initial_vbrk TO lt_initial_vbrk.
     ENDLOOP.
   ENDMETHOD.                    "populate_initial_vbrk_tab
+  
+  METHOD populate_initial_vbrp_tab. "VBRP requires an additional level of abstracion due to the presence of the NETWR field. It's data
+    TYPES: BEGIN OF t_temp,         "type - CURR makes it impossible to move a substring into the field immediately after splitting the
+      string1 TYPE string,          "initial string containing all the data. I need to first save the substring into a string field and
+      string2 TYPE string,          "then '=' is enough to perform the conversion to CURR.
+      string3 TYPE string,
+      string4 TYPE string,
+      string5 TYPE string,
+    END OF t_temp.
+    DATA: lt_temp  TYPE TABLE OF t_temp,
+          lwa_temp TYPE t_temp.
+
+    LOOP AT lt_initial INTO lwa_initial.
+      CLEAR lwa_temp.
+      SPLIT lwa_initial-string AT i_separator_type INTO lwa_temp-string1
+                                                        lwa_temp-string2
+                                                        lwa_temp-string3
+                                                        lwa_temp-string4
+                                                        lwa_temp-string5.
+      lwa_initial_vbrp-vbeln = lwa_temp-string1.
+      lwa_initial_vbrp-posnr = lwa_temp-string2.
+      lwa_initial_vbrp-meins = lwa_temp-string3.
+      lwa_initial_vbrp-matnr = lwa_temp-string4.
+      lwa_initial_vbrp-netwr = lwa_temp-string5.
+      APPEND lwa_initial_vbrp TO lt_initial_vbrp.
+    ENDLOOP.
+  ENDMETHOD.                    "populate_initial_vbrp_tab
 ENDCLASS.                    "lcl_session_technique_ini IMPLEMENTATION
 
 *----------------------------------------------------------------------*
