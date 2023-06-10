@@ -722,6 +722,7 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
       move_data_to_tab_with_sep_flds( i_separator_type = i_separator_type
                                       i_file_structure = i_file_structure ).
     ENDIF.
+	create_session_object( ).
   ENDMETHOD.                    "initialize_the_migration
 
   METHOD upload_local_file.
