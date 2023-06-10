@@ -23,10 +23,11 @@ CLASS lcl_direct_input_technique_ini DEFINITION.
   PUBLIC SECTION.
     INTERFACES: lif_migrator.
   PRIVATE SECTION.
-    METHODS: upload_local_file              IMPORTING i_file_type      TYPE string,
+    METHODS: upload_local_file              IMPORTING i_file_type      TYPE string
+                                                      i_file_structure TYPE string,
              upload_server_file,
              load_text_file,
-             load_excel_file,
+             load_excel_file                IMPORTING i_file_structure TYPE string,
              move_data_to_tab_with_sep_flds IMPORTING i_separator_type TYPE string
                                                       i_file_structure TYPE string,
              move_data_to_tab_like_target   IMPORTING i_file_structure TYPE string,
@@ -170,15 +171,19 @@ CLASS lcl_session_technique_ini DEFINITION.
              upload_server_file,
              load_text_file,
              load_excel_file   IMPORTING i_file_structure TYPE string,
-			 move_data_to_tab_with_sep_flds IMPORTING i_separator_type TYPE string
+             move_data_to_tab_with_sep_flds IMPORTING i_separator_type TYPE string
                                                       i_file_structure TYPE string,
              populate_initial_kna1_tab      IMPORTING i_separator_type TYPE string,
              populate_initial_vbrk_tab      IMPORTING i_separator_type TYPE string,
              populate_initial_vbrp_tab      IMPORTING i_separator_type TYPE string,
              create_session_object,
-			 populate_bdcdata_structure     IMPORTING i_file_structure TYPE string,
-			 map_program_data,
-			 close_session_object.
+             populate_bdcdata_structure     IMPORTING i_file_structure TYPE string,
+             map_program_data,
+             map_field_data                 IMPORTING i_field TYPE string,
+             close_session_object.
+
+    DATA: lt_bdcdata  TYPE TABLE OF bdcdata,
+          lwa_bdcdata TYPE bdcdata.
 
     TYPES: BEGIN OF t_initial,
       string TYPE string,

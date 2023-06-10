@@ -434,23 +434,23 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
       WHEN 'KNA1'.
         MODIFY kna1 FROM TABLE lt_final_kna1.
         IF sy-subrc = 0.
-          MESSAGE i000(zbmierzwi_test_msg2).
+          MESSAGE i000(data_mig_centre).
         ELSE.
-          MESSAGE i001(zbmierzwi_test_msg2).
+          MESSAGE i001(data_mig_centre).
         ENDIF.
       WHEN 'VBRK'.
         MODIFY vbrk FROM TABLE lt_final_vbrk.
         IF sy-subrc = 0.
-          MESSAGE i002(zbmierzwi_test_msg2).
+          MESSAGE i002(data_mig_centre).
         ELSE.
-          MESSAGE i003(zbmierzwi_test_msg2).
+          MESSAGE i003(data_mig_centre).
         ENDIF.
       WHEN 'VBRP'.
         MODIFY vbrp FROM TABLE lt_final_vbrp.
         IF sy-subrc = 0.
-          MESSAGE i003(zbmierzwi_test_msg2).
+          MESSAGE i003(data_mig_centre).
         ELSE.
-          MESSAGE i004(zbmierzwi_test_msg2).
+          MESSAGE i004(data_mig_centre).
         ENDIF.
     ENDCASE.
   ENDMETHOD.                    "move_data_to_database_table
@@ -722,9 +722,9 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
       move_data_to_tab_with_sep_flds( i_separator_type = i_separator_type
                                       i_file_structure = i_file_structure ).
     ENDIF.
-	create_session_object( ).
-	populate_bdcdata_structure( i_file_structure = i_file_structure ).
-	close_session_object( ).
+    create_session_object( ).
+    populate_bdcdata_structure( i_file_structure = i_file_structure ).
+    close_session_object( ).
   ENDMETHOD.                    "initialize_the_migration
 
   METHOD upload_local_file.
@@ -787,7 +787,7 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
       LEAVE LIST-PROCESSING.
     ENDIF.
   ENDMETHOD.                    "upload_server_file
-  
+
   METHOD move_data_to_tab_with_sep_flds.
     CASE i_file_structure.
       WHEN 'KNA1'.
@@ -823,7 +823,7 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
       APPEND lwa_initial_vbrk TO lt_initial_vbrk.
     ENDLOOP.
   ENDMETHOD.                    "populate_initial_vbrk_tab
-  
+
   METHOD populate_initial_vbrp_tab. "VBRP requires an additional level of abstracion due to the presence of the NETWR field. It's data
     TYPES: BEGIN OF t_temp,         "type - CURR makes it impossible to move a substring into the field immediately after splitting the
       string1 TYPE string,          "initial string containing all the data. I need to first save the substring into a string field and
@@ -850,7 +850,7 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
       APPEND lwa_initial_vbrp TO lt_initial_vbrp.
     ENDLOOP.
   ENDMETHOD.                    "populate_initial_vbrp_tab
-  
+
   METHOD create_session_object.
     CALL FUNCTION 'BDC_OPEN_GROUP'
       EXPORTING
@@ -859,11 +859,19 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
         KEEP                      = 'X'
         USER                      = SY-UNAME.
   ENDMETHOD.                    "create_session_object
-  
+
   METHOD populate_bdcdata_structure.
     CASE i_file_structure.
       WHEN 'KNA1'.
-        map_program_data( ).
+        LOOP AT lt_initial_kna1 INTO lwa_initial_kna1.
+          map_program_data( ).
+          map_field_data( i_field = 'KUNNR' ).
+          map_field_data( i_field = 'NAME1' ).
+          map_field_data( i_field = 'LAND1' ).
+          map_field_data( i_field = 'REGIO' ).
+          map_field_data( i_field = 'ORT01' ).
+          map_field_data( i_field = 'STRAS' ).
+        ENDLOOP.
       WHEN 'VBRK'.
         map_program_data( ).
       WHEN 'VBRP'.
@@ -879,7 +887,32 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
     lwa_bdcdata-dynbegin = 'X'.
     APPEND lwa_bdcdata TO lt_bdcdata.
   ENDMETHOD.                    "map_program_data
-  
+
+  METHOD map_field_data.
+    CLEAR lwa_bdcdata.
+    CASE i_field.
+      WHEN 'KUNNR'.
+        lwa_bdcdata-fnam = 'KNA1-KUNNR'.
+        lwa_bdcdata-fval = lwa_initial_kna1-kunnr.
+      WHEN 'NAME1'.
+        lwa_bdcdata-fnam = 'KNA1-NAME1'.
+        lwa_bdcdata-fval = lwa_initial_kna1-name1.
+      WHEN 'LAND1'.
+        lwa_bdcdata-fnam = 'KNA1-LAND1'.
+        lwa_bdcdata-fval = lwa_initial_kna1-land1.
+      WHEN 'REGIO'.
+        lwa_bdcdata-fnam = 'KNA1-REGIO'.
+        lwa_bdcdata-fval = lwa_initial_kna1-regio.
+      WHEN 'ORT01'.
+        lwa_bdcdata-fnam = 'KNA1-ORT01'.
+        lwa_bdcdata-fval = lwa_initial_kna1-ort01.
+      WHEN 'STRAS'.
+        lwa_bdcdata-fnam = 'KNA1-STRAS'.
+        lwa_bdcdata-fval = lwa_initial_kna1-stras.
+    ENDCASE.
+    APPEND lwa_bdcdata TO lt_bdcdata.
+  ENDMETHOD.                    "map_field_data
+
   METHOD close_session_object.
     CALL FUNCTION 'BDC_CLOSE_GROUP'.
   ENDMETHOD.                    "close_session_object
