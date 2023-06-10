@@ -723,6 +723,7 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
                                       i_file_structure = i_file_structure ).
     ENDIF.
 	create_session_object( ).
+	populate_bdcdata_structure( i_file_structure = i_file_structure ).
 	close_session_object( ).
   ENDMETHOD.                    "initialize_the_migration
 
@@ -857,6 +858,14 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
         KEEP                      = 'X'
         USER                      = SY-UNAME.
   ENDMETHOD.                    "create_session_object
+  
+  METHOD populate_bdcdata_structure.
+    CASE i_file_structure.
+      WHEN 'KNA1'.
+      WHEN 'VBRK'.
+      WHEN 'VBRP'.
+    ENDCASE.
+  ENDMETHOD.                    "populate_bdcdata_structure
   
   METHOD close_session_object.
     CALL FUNCTION 'BDC_CLOSE_GROUP'.
