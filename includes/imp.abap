@@ -723,6 +723,7 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
                                       i_file_structure = i_file_structure ).
     ENDIF.
 	create_session_object( ).
+	close_session_object( ).
   ENDMETHOD.                    "initialize_the_migration
 
   METHOD upload_local_file.
@@ -856,6 +857,10 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
         KEEP                      = 'X'
         USER                      = SY-UNAME.
   ENDMETHOD.                    "create_session_object
+  
+  METHOD close_session_object.
+    CALL FUNCTION 'BDC_CLOSE_GROUP'.
+  ENDMETHOD.                    "close_session_object
 ENDCLASS.                    "lcl_session_technique_ini IMPLEMENTATION
 
 *----------------------------------------------------------------------*
