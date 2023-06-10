@@ -846,6 +846,15 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
       APPEND lwa_initial_vbrp TO lt_initial_vbrp.
     ENDLOOP.
   ENDMETHOD.                    "populate_initial_vbrp_tab
+  
+  METHOD create_session_object.
+    CALL FUNCTION 'BDC_OPEN_GROUP'
+      EXPORTING
+        CLIENT                    = SY-MANDT
+        GROUP                     = 'S1'
+        KEEP                      = 'X'
+        USER                      = SY-UNAME.
+  ENDMETHOD.                    "create_session_object
 ENDCLASS.                    "lcl_session_technique_ini IMPLEMENTATION
 
 *----------------------------------------------------------------------*
