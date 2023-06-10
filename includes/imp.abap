@@ -764,7 +764,22 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
   ENDMETHOD.                    "load_excel_file
 
   METHOD upload_server_file.
-  ENDMETHOD.                    "upload_server_filer
+    DATA: lv_msg TYPE string.
+    OPEN DATASET p_f_path FOR INPUT IN TEXT MODE ENCODING DEFAULT MESSAGE lv_msg.
+    IF sy-subrc = 0.
+      CLEAR: lwa_initial.
+      READ DATASET p_f_path INTO lwa_initial-string.
+      IF sy-subrc = 0.
+        APPEND lwa_initial TO lt_initial.
+      ELSE.
+        CLOSE DATASET p_f_path.
+        EXIT.
+      ENDIF.
+    ELSE.
+      MESSAGE lv_msg TYPE 'E'.
+      LEAVE LIST-PROCESSING.
+    ENDIF.
+  ENDMETHOD.                    "upload_server_file
 ENDCLASS.                    "lcl_session_technique_ini IMPLEMENTATION
 
 *----------------------------------------------------------------------*
