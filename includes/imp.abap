@@ -790,6 +790,7 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
       WHEN 'KNA1'.
         populate_initial_kna1_tab( i_separator_type = i_separator_type ).
       WHEN 'VBRK'.
+        populate_initial_vbrk_tab( i_separator_type = i_separator_type ).
       WHEN 'VBRP'.
     ENDCASE.
   ENDMETHOD.                    "move_data_to_tab_with_sep_flds
@@ -805,6 +806,19 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
       APPEND lwa_initial_kna1 TO lt_initial_kna1.
     ENDLOOP.
   ENDMETHOD.                    "populate_initial_kna1_tab
+
+  METHOD populate_initial_vbrk_tab.
+    LOOP AT lt_initial INTO lwa_initial.
+      CLEAR lwa_initial_vbrk.
+      SPLIT lwa_initial-string AT i_separator_type INTO lwa_initial_vbrk-vbeln
+                                                        lwa_initial_vbrk-fktyp
+                                                        lwa_initial_vbrk-waerk
+                                                        lwa_initial_vbrk-belnr
+                                                        lwa_initial_vbrk-fkdat
+                                                        lwa_initial_vbrk-zlsch.
+      APPEND lwa_initial_vbrk TO lt_initial_vbrk.
+    ENDLOOP.
+  ENDMETHOD.                    "populate_initial_vbrk_tab
 ENDCLASS.                    "lcl_session_technique_ini IMPLEMENTATION
 
 *----------------------------------------------------------------------*
