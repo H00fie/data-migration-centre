@@ -176,7 +176,7 @@ CLASS lcl_session_technique_ini DEFINITION.
              populate_initial_kna1_tab      IMPORTING i_separator_type TYPE string,
              populate_initial_vbrk_tab      IMPORTING i_separator_type TYPE string,
              populate_initial_vbrp_tab      IMPORTING i_separator_type TYPE string,
-             create_session_object,
+             open_session_object,
              populate_bdcdata_structure     IMPORTING i_file_structure TYPE string,
              map_program_data,
              map_field_data                 IMPORTING i_field TYPE string,

@@ -722,7 +722,7 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
       move_data_to_tab_with_sep_flds( i_separator_type = i_separator_type
                                       i_file_structure = i_file_structure ).
     ENDIF.
-    create_session_object( ).
+    open_session_object( ).
     populate_bdcdata_structure( i_file_structure = i_file_structure ).
     close_session_object( ).
   ENDMETHOD.                    "initialize_the_migration
@@ -851,14 +851,14 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
     ENDLOOP.
   ENDMETHOD.                    "populate_initial_vbrp_tab
 
-  METHOD create_session_object.
+  METHOD open_session_object.
     CALL FUNCTION 'BDC_OPEN_GROUP'
       EXPORTING
         CLIENT                    = SY-MANDT
         GROUP                     = 'S1'
         KEEP                      = 'X'
         USER                      = SY-UNAME.
-  ENDMETHOD.                    "create_session_object
+  ENDMETHOD.                    "open_session_object
 
   METHOD populate_bdcdata_structure.
     CASE i_file_structure.
