@@ -723,7 +723,7 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
                                       i_file_structure = i_file_structure ).
     ENDIF.
     open_session_object( ).
-    populate_bdcdata_structure( i_file_structure = i_file_structure ).
+    finalize_session_object( i_file_structure = i_file_structure ).
     close_session_object( ).
   ENDMETHOD.                    "initialize_the_migration
 
@@ -860,7 +860,7 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
         USER                      = SY-UNAME.
   ENDMETHOD.                    "open_session_object
 
-  METHOD populate_bdcdata_structure.
+  METHOD finalize_session_object.
     CASE i_file_structure.
       WHEN 'KNA1'.
         LOOP AT lt_initial_kna1 INTO lwa_initial_kna1.
@@ -895,7 +895,7 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
           create_session_object( ).
         ENDLOOP.
     ENDCASE.
-  ENDMETHOD.                    "populate_bdcdata_structure
+  ENDMETHOD.                    "finalize_session_object
 
   METHOD map_program_data.
     REFRESH lt_bdcdata.
