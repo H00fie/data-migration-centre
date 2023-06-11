@@ -181,7 +181,8 @@ CLASS lcl_session_technique_ini DEFINITION.
              map_program_data,
              map_field_data                 IMPORTING i_field TYPE string,
 			 create_session_object,
-             close_session_object.
+             close_session_object,
+			 display_summary.
 
     DATA: lt_bdcdata  TYPE TABLE OF bdcdata,
           lwa_bdcdata TYPE bdcdata.

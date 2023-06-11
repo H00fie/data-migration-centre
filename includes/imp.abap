@@ -725,6 +725,7 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
     open_session_object( ).
     finalize_session_object( i_file_structure = i_file_structure ).
     close_session_object( ).
+    display_summary( ).
   ENDMETHOD.                    "initialize_the_migration
 
   METHOD upload_local_file.
@@ -963,7 +964,7 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
     ENDCASE.
     APPEND lwa_bdcdata TO lt_bdcdata.
   ENDMETHOD.                    "map_field_data
-  
+
   METHOD create_session_object.
     CALL FUNCTION 'BDC_INSERT'
       EXPORTING
@@ -975,6 +976,14 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
   METHOD close_session_object.
     CALL FUNCTION 'BDC_CLOSE_GROUP'.
   ENDMETHOD.                    "close_session_object
+
+  METHOD display_summary.
+    IF sy-subrc = 0.
+      MESSAGE i007(data_mig_centre).
+    ELSE.
+      MESSAGE i008(data_mig_centre).
+    ENDIF.
+  ENDMETHOD.                    "display_summary
 ENDCLASS.                    "lcl_session_technique_ini IMPLEMENTATION
 
 *----------------------------------------------------------------------*
