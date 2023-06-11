@@ -1032,6 +1032,8 @@ ENDCLASS.                    "lcl_f4_help_provider IMPLEMENTATION
 *004 - The data has been moved to the VBRP database table.
 *005 - The moving of the data to the VBRP database table has failed.
 *006 - A record & been affected.
+*007 - The session object has been created. To process it - proceed to SM35.
+*008 - The creation of the session object has failed.
 
 *THE MODULE POOL PROGRAM FOR THE CALL TRANSACTION TECHNIQUE IN THE CASE OF KNA1.---------------------------------------------------------------
 *-----------Screen 100 Flow Logic-----------
