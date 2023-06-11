@@ -871,6 +871,7 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
           map_field_data( i_field = 'REGIO' ).
           map_field_data( i_field = 'ORT01' ).
           map_field_data( i_field = 'STRAS' ).
+          create_session_object( ).
         ENDLOOP.
       WHEN 'VBRK'.
         LOOP AT lt_initial_vbrk INTO lwa_initial_vbrk.
@@ -881,6 +882,7 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
           map_field_data( i_field = 'BELNR' ).
           map_field_data( i_field = 'FKDAT' ).
           map_field_data( i_field = 'ZLSCH' ).
+          create_session_object( ).
         ENDLOOP.
       WHEN 'VBRP'.
         LOOP AT lt_initial_vbrp INTO lwa_initial_vbrp.
@@ -890,6 +892,7 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
           map_field_data( i_field = 'MEINS' ).
           map_field_data( i_field = 'MATNR' ).
           map_field_data( i_field = 'NETWR' ).
+          create_session_object( ).
         ENDLOOP.
     ENDCASE.
   ENDMETHOD.                    "populate_bdcdata_structure
@@ -960,6 +963,14 @@ CLASS lcl_session_technique_ini IMPLEMENTATION.
     ENDCASE.
     APPEND lwa_bdcdata TO lt_bdcdata.
   ENDMETHOD.                    "map_field_data
+  
+  METHOD create_session_object.
+    CALL FUNCTION 'BDC_INSERT'
+      EXPORTING
+        TCODE                  = 'ZBMI11'
+      TABLES
+        DYNPROTAB              = lt_bdcdata.
+  ENDMETHOD.                    "create_session_object
 
   METHOD close_session_object.
     CALL FUNCTION 'BDC_CLOSE_GROUP'.
