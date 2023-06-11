@@ -1035,7 +1035,7 @@ ENDCLASS.                    "lcl_f4_help_provider IMPLEMENTATION
 *007 - The session object has been created. To process it - proceed to SM35.
 *008 - The creation of the session object has failed.
 
-*THE MODULE POOL PROGRAM FOR THE CALL TRANSACTION TECHNIQUE IN THE CASE OF KNA1.---------------------------------------------------------------
+*THE MODULE POOL PROGRAM FOR THE CALL TRANSACTION TECHNIQUE.---------------------------------------------------------------
 *-----------Screen 100 Flow Logic-----------
 *PROCESS BEFORE OUTPUT.
 *
@@ -1043,14 +1043,14 @@ ENDCLASS.                    "lcl_f4_help_provider IMPLEMENTATION
 * MODULE USER_COMMAND_0100.
 * MODULE exit_forcefully AT EXIT-COMMAND.
 *---------------Messages---------------
-*PROGRAM mig_ctr_kna1.
+*PROGRAM mig_ctr_kna1/mig_ctr_vbrk/mig_ctr_vbrp.
 *
-*TABLES kna1.
+*TABLES kna1/vbrk/vbrp.
 *
 *MODULE user_command_0100 INPUT.
 *  CASE sy-ucomm.
 *    WHEN 'FC1'.
-*      MODIFY kna1.
+*      MODIFY kna1/vbrk/vbrp.
 *      IF sy-subrc = 0.
 *        MESSAGE i006(data_mig_centre) WITH 'has'.
 *      ELSE.
