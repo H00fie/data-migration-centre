@@ -139,3 +139,4 @@ SELECTION-SCREEN END OF BLOCK bk7.
 *028 - Call Transaction
 *029 - Provide the path to the file with the data.
 *030 - Proceed.
+*031 - Session Technique.
