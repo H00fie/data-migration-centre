@@ -68,7 +68,7 @@ CLASS lcl_visibility_dispenser IMPLEMENTATION.
             MODIFY SCREEN.
           ENDIF.
         ENDLOOP.
-      WHEN 'FC4'.
+      WHEN 'FC4' OR 'FC5'.
         LOOP AT SCREEN.
           IF screen-group1 = 'ID1' OR screen-group1 = 'ID2' OR screen-group1 = 'ID3' OR screen-group1 = 'ID5' OR screen-group1 = 'ID6' OR
              screen-group1 = 'ID7'.
@@ -133,7 +133,7 @@ CLASS lcl_visibility_dispenser IMPLEMENTATION.
             MODIFY SCREEN.
           ENDIF.
         ENDLOOP.
-      WHEN 'FC11' OR 'FC12'.
+      WHEN 'FC11' OR 'FC12' OR 'FC14'.
         LOOP AT SCREEN.
           IF screen-group1 = 'ID1' OR screen-group1 = 'ID2' OR screen-group1 = 'ID3' OR screen-group1 = 'ID4' OR screen-group1 = 'ID5' OR
              screen-group1 = 'ID6'.
@@ -180,6 +180,8 @@ CLASS lcl_action_handler IMPLEMENTATION.
         set_migration_technique( i_migration_technique = 'Direct Input Method' ).
       WHEN 'FC12'.
         set_migration_technique( i_migration_technique = 'Call Transaction Technique' ).
+      WHEN 'FC12'.
+        set_migration_technique( i_migration_technique = 'Session Technique' ).
       WHEN 'FC13'.
         carry_out_migration( ).
     ENDCASE.
@@ -1000,6 +1002,9 @@ CLASS lcl_factory IMPLEMENTATION.
       WHEN 'Call Transaction Technique'.
         DATA(lo_call_trans_technique_ini) = NEW lcl_call_trans_technique_ini( ).
         r_o_migrator = lo_call_trans_technique_ini.
+      WHEN 'Session Technique'.
+        DATA(lo_session_technique_ini) = NEW lcl_session_technique_ini( ).
+        r_o_migrator = lo_session_technique_ini.
     ENDCASE.
   ENDMETHOD.                    "provide_chosen_migrator
 ENDCLASS.                    "lcl_factory IMPLEMENTATION
