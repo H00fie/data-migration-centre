@@ -436,23 +436,23 @@ CLASS lcl_direct_input_technique_ini IMPLEMENTATION.
       WHEN 'KNA1'.
         MODIFY kna1 FROM TABLE lt_final_kna1.
         IF sy-subrc = 0.
-          MESSAGE i000(data_mig_centre).
+          MESSAGE i000(zbmierzwi_test_msg2).
         ELSE.
-          MESSAGE i001(data_mig_centre).
+          MESSAGE i001(zbmierzwi_test_msg2).
         ENDIF.
       WHEN 'VBRK'.
         MODIFY vbrk FROM TABLE lt_final_vbrk.
         IF sy-subrc = 0.
-          MESSAGE i002(data_mig_centre).
+          MESSAGE i002(zbmierzwi_test_msg2).
         ELSE.
-          MESSAGE i003(data_mig_centre).
+          MESSAGE i003(zbmierzwi_test_msg2).
         ENDIF.
       WHEN 'VBRP'.
         MODIFY vbrp FROM TABLE lt_final_vbrp.
         IF sy-subrc = 0.
-          MESSAGE i003(data_mig_centre).
+          MESSAGE i003(zbmierzwi_test_msg2).
         ELSE.
-          MESSAGE i004(data_mig_centre).
+          MESSAGE i004(zbmierzwi_test_msg2).
         ENDIF.
     ENDCASE.
   ENDMETHOD.                    "move_data_to_database_table
