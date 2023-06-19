@@ -1047,7 +1047,7 @@ ENDCLASS.                    "lcl_f4_help_provider IMPLEMENTATION
 *PROCESS AFTER INPUT.
 * MODULE USER_COMMAND_0100.
 * MODULE exit_forcefully AT EXIT-COMMAND.
-*---------------Messages---------------
+*---------------TOP INCLUDE---------------
 *PROGRAM mig_ctr_kna1/mig_ctr_vbrk/mig_ctr_vbrp.
 *
 *TABLES kna1/vbrk/vbrp.
